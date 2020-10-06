@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Display from "./components/Display";
 import Form from "./components/Form";
 import Filter from "./components/Filter";
+import axios from "axios";
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -33,6 +34,14 @@ const App = () => {
     }
 
     const handleFilterChange = event => setFilter(event.target.value);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:3001/persons")
+        .then(respone => {
+            setPersons(respone.data);
+        });
+    }, []);
 
     const contactsToShow = filter === "" ? persons : persons.filter(it => it.name.includes(filter));
     return (
