@@ -18,9 +18,9 @@ function App() {
 
     const handleChange = event => setQuery(event.target.value);
 
-    let filtered = query == "" ? countries : countries.filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
+    let filtered = query === "" ? countries : countries.filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
     let displayToShow = "";
-    if (filtered.length == 1) {
+    if (filtered.length === 1) {
         displayToShow = <Country value={filtered} />
     } else if (filtered.length <= 10) {
         displayToShow = <CountryList countries={filtered} />

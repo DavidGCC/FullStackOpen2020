@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 
 
@@ -14,7 +14,7 @@ const Country = ( {value} ) => {
             <ul>
                 {value.languages.map(i => <li key={i.name}>{i.name}</li>)}
             </ul>
-            <img src={value.flag} style={{width: 300, height: "auto"}}/>
+            <img src={value.flag} alt="country flag" style={{width: 300, height: "auto"}}/>
         </div>
     )
 
