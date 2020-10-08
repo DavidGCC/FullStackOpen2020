@@ -27,9 +27,6 @@ function App() {
     } else {
         displayToShow = TOO_MANY_SEARCHES;
     }
-    if (query.toLowerCase() === "georgia") {
-        displayToShow = <Country value={filtered} />
-    }
   return (
     <div>
         <h1>Find Country</h1>
