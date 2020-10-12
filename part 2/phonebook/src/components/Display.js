@@ -1,11 +1,11 @@
 import React from "react";
 
 
-const Display = props => {
+const Display = ({persons, handleDeleteClick}) => {
 
     return (
         <div>
-            {props.persons.map((it) => <p key={it.name}>{it.name} {it.number}</p>)}
+            {persons.map((it) => <p key={it.name}>{it.name} {it.number} <button onClick={() => handleDeleteClick(it.id)}>Delete</button></p>)}
         </div>
     )
 
