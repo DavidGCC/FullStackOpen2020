@@ -1,19 +1,9 @@
 {
   "persons": [
     {
-      "name": "David",
-      "number": "555227791",
-      "id": "David"
-    },
-    {
-      "name": "Ia ",
-      "number": "593176724",
-      "id": "Ia "
-    },
-    {
-      "name": "Gocha",
-      "number": "599117792",
-      "id": "Gocha"
+      "name": "1",
+      "number": "21",
+      "id": "1"
     }
   ]
 }
