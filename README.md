@@ -2,7 +2,7 @@ Codes of exercises for [Full Stack Open 2020](https://fullstackopen.com/en/) onl
 
 The course serves as an introduction to modern web application development with JavaScript. The main focus is on building single page applications with ReactJS that use REST APIs built with Node.js. The course also contains a section on GraphQL, a modern alternative to REST APIs.
 
-Partners and affiliates of the course include Houston Inc, Terveystalo, Elisa, K-ryhmä, Unity Technologies and Konecranes.
+Partners and affiliates of the course include [Houston Inc.](https://www.houston-inc.com/), [Terveystalo](https://www.terveystalo.com/fi/Yritystietoa/Terveystalo-tyontantajana/Digital-Health/), [Elisa](https://elisa.fi/), [K-ryhmä](https://www.kesko.fi), [Unity Technologies](https://www.instagram.com/unitytechnologies/?hl=en) and [Konecranes](https://careers.konecranes.com/Konecranes/).
 
 **Course Parts:**
 **Part 0**: Fundamentals of Web Apps <br />
