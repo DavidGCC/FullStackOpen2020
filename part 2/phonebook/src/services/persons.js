@@ -1,14 +1,14 @@
 import axios from "axios";
 
 
-const url = "http://localhost:3001/persons"
+const url = "api/persons"
 
 const getContacts = () => {
     let req = axios.get(url);
     return req.then(res => res.data);
 }
 
-const addContact = obj => {
+const addContact = obj => { 
     let req = axios.post(url, obj);
     return req.then(res => res.data);
 }
