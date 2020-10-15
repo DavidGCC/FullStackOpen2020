@@ -1,7 +1,10 @@
 const morgan = require("morgan");
 const express = require("express");
 const app = express();
+const cors = require("cors");
+const e = require("express");
 
+app.use(cors());
 
 app.use(express.json());
 morgan.token("reqBody", (req, res) => {
@@ -11,7 +14,7 @@ morgan.token("reqBody", (req, res) => {
         return JSON.stringify(req.body);
     }
 });
-
+app.use(express.static(`${__dirname}/build`))
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :reqBody"));
 
 let persons = [
@@ -64,19 +67,30 @@ app.get("/api/persons/:id", (req, res) => {
 })
 app.delete("/api/persons/:id", (req, res) => {
     const id = Number(req.params.id);
-    persons = persons.filter(i => i.id !== id);
+    if (persons.find(i => i.id === Number(req.params.id))) {
+        persons = persons.filter(i => i.id !== Number(req.params.id));
+    } else {
+        return res.status(400).json({
+            "error": `Person with ${req.params.id} is not in database`
+        })
+    }
     res.status(204).end();
 })
 app.post("/api/persons", (req, res) => {
     let body = req.body;
     let randomId = Math.floor(Math.random() * 100000);
-    if (!(body.hasOwnProperty("name") && body.hasOwnProperty("number"))) {
-        return res.json({
-            error: `Name or Number is missing`
+    if (!body.name) {
+        return res.status(400).json({
+            "error": "name missing"
+        })
+    }
+    if (!body.number) {
+        return res.status(400).json({
+            "error": "number missing"
         })
     }
     if (persons.find(i => i.name === body.name)) {
-        return res.json({
+        return res.status(400).json({
             error: `${body.name} already exists in database`
         })
     }
@@ -88,9 +102,19 @@ app.post("/api/persons", (req, res) => {
     }
     persons = persons.concat(newContact);
     res.json(newContact);
+});
+app.put("/api/persons/:id", (req, res) => {
+    const body = req.body;
+    persons = persons.map(i => {
+        if (i.id === Number(req.params.id)) {
+            return {...i, number: body.number}
+        } else {
+            return i;
+        }
+    })
+    res.json(persons);
 })
-
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is listening on Port ${PORT}`);
 });
