@@ -42,36 +42,32 @@ app.delete("/api/persons/:id", (req, res, next) => {
     .then(r => res.status(204).end())
     .catch(err => next(err));
 })
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
     let body = req.body;
-    if (!(body.name || body.number)) {
-        return res.status(400).send({error: "Name or number can't be empty"});
-    }
     const person = new Person({
         name: body.name,
         number: body.number
     });
     person.save({}).then(r => res.json(r))
-    .catch(err => res.send(`Couldn't add the contact ${err.message}`)); 
+    .catch(err => next(err)); 
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
     const body = req.body;
-    if (body.number) {
-        Person.findByIdAndUpdate(req.params.id, { $set: { "number": body.number }})
-        .then(r => res.json(r))
-        .catch(err => next(err));
-    } else {
-        res.status(400).send({error: "Number can't be empty"});
-    }
+    Person.findByIdAndUpdate(req.params.id, { $set: { "number": body.number }}, {runValidators: true})
+    .then(r => res.json(r))
+    .catch(err => next(err));
 })
 
 const errorHandler = (error, req, res, next) => {
     console.error(error.message);
-
     if (error.name === "CastError") {
-        return response.status(400).send({error: "Malformed Id"});
+        return res.status(400).send({error: "Malformed Id"});
     }
+    if (error.name === "ValidationError") {
+        res.status(400).send({error: error.message})
+    }
+
 
     next(error);
 };

@@ -40,21 +40,20 @@ const App = () => {
                         nullMessage();
                     })
                     .catch(err => {
-                        setMessage({type: "error", text: `Couldn't change number for ${newName}.`});
+                        setMessage({type: "error", text: `Couldn't change number for ${newName}. Message: ${err.response.data.error}`});
                         nullMessage();
                     })
                     .then(res => personService.getContacts().then(res => setPersons(res))); 
                 }
             } else {
-                let newPersons = [...persons];
                 personService
                 .addContact(newPerson)
                 .then(res => {
                     setMessage({type: "success", text: `${newName} has been added to the phone book with number ${newNumber}.`});
                     nullMessage();
                 })
-                .catch(err => {
-                    setMessage({type: "error", text: `${newName} couldn't be added to the database. Message: ${err}`});
+                .catch((err) => {
+                    setMessage({type: "error", text: `${newName} couldn't be added to the database. Message: ${err.response.data.error}`});
                     nullMessage();
                 })
                 .then(res => personService.getContacts().then(res => setPersons(res)));
@@ -74,7 +73,6 @@ const App = () => {
                     nullMessage();
                 })
                 .catch(err => {
-                    console.log(err);
                     setMessage({type: "error", text: `${person.name} is already deleted from the database`});
                     nullMessage();
                 });
@@ -82,7 +80,7 @@ const App = () => {
             }
         }
 
-    useEffect(() => personService.getContacts().then(res => setPersons(res)), []);
+    useEffect(() => personService.getContacts().then(res => setPersons(res)).catch(err => setPersons([])), []);
 
     return (
         <div>
