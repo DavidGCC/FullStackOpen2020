@@ -27,35 +27,39 @@ const App = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         let newPerson = {name: newName.trim(), number: newNumber.trim()};
-        let person = persons.find(i => i.name === newName);
-        if (person) {
-            if (window.confirm(`${newName} already exists in the phonebook. Do you want to replace the number?`)) {
+        let person;
+        personService.getContacts()
+        .then(res => {
+            person = res.find(i => i.name === newName);
+            if (person) {
+                if (window.confirm(`${newName} already exists in the phonebook. Do you want to replace the number?`)) {
+                    personService
+                    .updateContact(person.id, newPerson)
+                    .then(res => {
+                        setMessage({type: "success", text: `Number for ${newName} has been changed to ${newNumber}.`});
+                        nullMessage();
+                    })
+                    .catch(err => {
+                        setMessage({type: "error", text: `Couldn't change number for ${newName}.`});
+                        nullMessage();
+                    })
+                    .then(res => personService.getContacts().then(res => setPersons(res))); 
+                }
+            } else {
+                let newPersons = [...persons];
                 personService
-                .updateContact(person.id, newPerson)
+                .addContact(newPerson)
                 .then(res => {
-                    setMessage({type: "success", text: `Number for ${newName} has been changed to ${newNumber}.`});
+                    setMessage({type: "success", text: `${newName} has been added to the phone book with number ${newNumber}.`});
                     nullMessage();
                 })
                 .catch(err => {
-                    setMessage({type: "error", text: `Couldn't change number for ${newName}.`});
+                    setMessage({type: "error", text: `${newName} couldn't be added to the database. Message: ${err}`});
                     nullMessage();
                 })
-                .then(res => personService.getContacts().then(res => setPersons(res))); 
+                .then(res => personService.getContacts().then(res => setPersons(res)));
             }
-        } else {
-            let newPersons = [...persons];
-            personService
-            .addContact(newPerson)
-            .then(res => {
-                setMessage({type: "success", text: `${newName} has been added to the phone book with number ${newNumber}.`});
-                nullMessage();
-            })
-            .catch(err => {
-                setMessage({type: "error", text: `${newName} couldn't be added to the database. Message: ${err}`});
-                nullMessage();
-            })
-            .then(res => personService.getContacts().then(res => setPersons(res)));
-        }
+        })
         setNewName("");
         setNewNumber("");
     }
@@ -70,6 +74,7 @@ const App = () => {
                     nullMessage();
                 })
                 .catch(err => {
+                    console.log(err);
                     setMessage({type: "error", text: `${person.name} is already deleted from the database`});
                     nullMessage();
                 });
