@@ -2,9 +2,9 @@ const morgan = require("morgan");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const Person = require("./models/Person");
 
 app.use(cors());
-
 app.use(express.json());
 morgan.token("reqBody", (req, res) => {
     if (req.method !== "POST") {
@@ -39,81 +39,46 @@ let persons = [
     }
 ];
 
-app.get("/", (req, res) => {
-    res.send("<h1>A Simple Hello Page</h1>");
-})
-
 app.get("/api/persons", (req, res) => {
-    res.json(persons);
+    Person.find({}).then(result => res.json(result));    
 })
 
 app.get("/info", (req, res) => {
-    res.send(
-        `<p>Phonebook has records for ${persons.length} people.</p>
-        <br>
-        <p>${new Date()}</p>`
-    )
+    Person.countDocuments({}).then(result => {
+        res.send(
+            `<p>Phonebook has records for ${result} people.</p>
+            <br>
+            <p>${new Date()}</p>`
+        )
+    })
 })
 
 app.get("/api/persons/:id", (req, res) => {
-    const id = Number(req.params.id);
-    const note = persons.find(i => i.id === id);
-    if (note) {
-        res.json(note);
-    } else {
-        res.status(404).end();
-    }
+    Person.findById(req.params.id)
+    .then(r => res.json(r))
+    .catch(err => res.send(`Couldn't accsess the specified contact ${err.message}`));
 })
 app.delete("/api/persons/:id", (req, res) => {
-    const id = Number(req.params.id);
-    if (persons.find(i => i.id === Number(req.params.id))) {
-        persons = persons.filter(i => i.id !== Number(req.params.id));
-    } else {
-        return res.status(400).json({
-            "error": `Person with ${req.params.id} is not in database`
-        })
-    }
-    res.status(204).end();
+    Person.findByIdAndRemove(req.params.id)
+    .then(r => res.status(204).end())
+    .catch(err => r.send(`Couldn't delete the contact ${err.message}`));
 })
 app.post("/api/persons", (req, res) => {
     let body = req.body;
-    let randomId = Math.floor(Math.random() * 100000);
-    if (!body.name) {
-        return res.status(400).json({
-            "error": "name missing"
-        })
-    }
-    if (!body.number) {
-        return res.status(400).json({
-            "error": "number missing"
-        })
-    }
-    if (persons.find(i => i.name === body.name)) {
-        return res.status(400).json({
-            error: `${body.name} already exists in database`
-        })
-    }
-
-    const newContact = {
+    const person = new Person({
         name: body.name,
-        number: body.number,
-        id: randomId
-    }
-    persons = persons.concat(newContact);
-    res.json(newContact);
+        number: body.number
+    });
+    person.save({}).then(r => res.json(r))
+    .catch(err => res.send(`Couldn't add the contact ${err.message}`)); 
 });
 app.put("/api/persons/:id", (req, res) => {
     const body = req.body;
-    persons = persons.map(i => {
-        if (i.id === Number(req.params.id)) {
-            return {...i, number: body.number}
-        } else {
-            return i;
-        }
-    })
-    res.json(persons);
+    Person.findByIdAndUpdate(req.params.id, { $set: { "number": body.number }})
+    .then(r => res.json(r))
+    .catch(err => res.send(`Couldn't update the specified contact ${err.message}`));
 })
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server is listening on Port ${PORT}`);
 });

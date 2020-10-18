@@ -1,4 +1,6 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
+
 
 if (process.argv.length < 3) {
     console.log("Please enter your password. Ex. node mongo.js <password> To list all contacts\nOr node mongo.js <password> <name_to_add> <number_to_add> To add new contact");
@@ -14,7 +16,13 @@ const personSchema = new mongoose.Schema({
     name: String,
     number: String
 });
-
+personSchema.set("toJSON", {
+    transform: (document, returnedObj) => {
+        returnedObj.id = returnedObj._id.toString()
+        delete returnedObj._id
+        delete returnedObj.__v
+    }
+})
 const Person = mongoose.model("Person", personSchema);
 
 if (process.argv.length == 3) {
