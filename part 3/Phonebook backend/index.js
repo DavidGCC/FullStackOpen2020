@@ -3,9 +3,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const Person = require("./models/Person");
+const { response } = require("express");
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+
 morgan.token("reqBody", (req, res) => {
     if (req.method !== "POST") {
         return " ";
@@ -15,29 +17,6 @@ morgan.token("reqBody", (req, res) => {
 });
 app.use(express.static(`${__dirname}/build`))
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :reqBody"));
-
-let persons = [
-    { 
-    "name": "Arto Hellas", 
-    "number": "040-123456",
-    "id": 1
-    },
-    { 
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523",
-    "id": 2
-    },
-    { 
-    "name": "Dan Abramov", 
-    "number": "12-43-234345",
-    "id": 3
-    },
-    { 
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122",
-    "id": 4
-    }
-];
 
 app.get("/api/persons", (req, res) => {
     Person.find({}).then(result => res.json(result));    
@@ -53,18 +32,21 @@ app.get("/info", (req, res) => {
     })
 })
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
     Person.findById(req.params.id)
     .then(r => res.json(r))
-    .catch(err => res.send(`Couldn't accsess the specified contact ${err.message}`));
+    .catch(err => next(err));
 })
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
     .then(r => res.status(204).end())
-    .catch(err => r.send(`Couldn't delete the contact ${err.message}`));
+    .catch(err => next(err));
 })
 app.post("/api/persons", (req, res) => {
     let body = req.body;
+    if (!(body.name || body.number)) {
+        return res.status(400).send({error: "Name or number can't be empty"});
+    }
     const person = new Person({
         name: body.name,
         number: body.number
@@ -72,12 +54,34 @@ app.post("/api/persons", (req, res) => {
     person.save({}).then(r => res.json(r))
     .catch(err => res.send(`Couldn't add the contact ${err.message}`)); 
 });
-app.put("/api/persons/:id", (req, res) => {
+
+app.put("/api/persons/:id", (req, res, next) => {
     const body = req.body;
-    Person.findByIdAndUpdate(req.params.id, { $set: { "number": body.number }})
-    .then(r => res.json(r))
-    .catch(err => res.send(`Couldn't update the specified contact ${err.message}`));
+    if (body.number) {
+        Person.findByIdAndUpdate(req.params.id, { $set: { "number": body.number }})
+        .then(r => res.json(r))
+        .catch(err => next(err));
+    } else {
+        res.status(400).send({error: "Number can't be empty"});
+    }
 })
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message);
+
+    if (error.name === "CastError") {
+        return response.status(400).send({error: "Malformed Id"});
+    }
+
+    next(error);
+};
+app.use(errorHandler);
+
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({error: "Unknown endpoint"});
+}
+app.use(unknownEndpoint);
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server is listening on Port ${PORT}`);
