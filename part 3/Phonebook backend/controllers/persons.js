@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const Person = require('../models/Person');
 
 
@@ -8,7 +8,7 @@ router.get('/', (request, response) => {
         .then(res => response.json(res));
 });
 
-router.get('/info', (request, response) => {
+router.get('/info', () => {
     Person
         .countDocuments({})
         .then(res => {
@@ -41,7 +41,7 @@ router.post('/', (request, response, next) => {
 router.put('/:id', (request, response, next) => {
     const body = request.body;
     Person
-        .findByIdAndUpdate(request.params.id, { $set: { 'number': body.number} }, { new: true }, { runValidators: true })
+        .findByIdAndUpdate(request.params.id, { $set: { 'number': body.number } }, { new: true }, { runValidators: true })
         .then(res => response.json(res))
         .catch(err => next(err));
 });
@@ -49,7 +49,7 @@ router.put('/:id', (request, response, next) => {
 router.delete('/:id', (request, response, next) => {
     Person
         .findByIdAndRemove(request.params.id)
-        .then(res => response.status(204).end())
+        .then(() => response.status(204).end())
         .catch(err => next(err));
 });
 

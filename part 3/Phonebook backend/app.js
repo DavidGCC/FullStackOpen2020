@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const cors = require("cors");
+const cors = require('cors');
 const config = require('./utils/config');
 const logger = require('./utils/logger');
 const middleware = require('./utils/middleware');
@@ -20,7 +20,7 @@ mongoose.connect(config.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: tr
 
 
 app.use(cors());
-app.use(express.static("build"));
+app.use(express.static('build'));
 app.use(express.json());
 app.use(middleware.requestLogger);
 
