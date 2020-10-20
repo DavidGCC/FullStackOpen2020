@@ -1,5 +1,3 @@
-const e = require("express");
-
 const dummy = (blogs) => {
     return 1;
 };
