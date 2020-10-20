@@ -3,7 +3,7 @@ const router = require('./controllers/router');
 const app = express();
 const mongoose = require('mongoose')
 const cors = require('cors')
-const config = require('./utils/config');
+const config = require('./utils/config').MONGODB_URL;
 
 const mongoUrl = config.MONGODB_URL;
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })

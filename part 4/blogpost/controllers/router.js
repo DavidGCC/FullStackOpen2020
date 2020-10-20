@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { request, response } = require('express');
 const Blog = require('../models/blog');
 
 router.get('/', (request, response) => {
@@ -7,7 +6,7 @@ router.get('/', (request, response) => {
         .find({})
         .then(res => {
             response.json(res);
-        })
+        });
 });
 
 
