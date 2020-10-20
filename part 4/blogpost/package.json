@@ -4,7 +4,7 @@
   "description": "blogpost application for fullstackopen",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -12,14 +12,17 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.11.0",
+    "jest": "^26.6.0",
     "nodemon": "^2.0.6"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jest": "^26.6.0",
     "mongoose": "^5.10.9",
     "mongoose-unique-validator": "^2.0.3"
+  },
+  "jest": {
+      "testEnvironment": "node"
   }
 }
