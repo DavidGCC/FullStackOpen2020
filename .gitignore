@@ -1,2 +1,6 @@
 .env
 Phonebook Live
+node_modules
+.eslintrc.js
+requests
+.eslintignore
