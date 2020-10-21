@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Blog = require('../models/blog');
+const logger = require('../utils/logger');
 
 router.get('/', async (request, response) => {
     const res = await Blog.find({});
@@ -8,17 +9,20 @@ router.get('/', async (request, response) => {
 
 
 router.post('/', (request, response) => {
-    const { title, author, url, likes } = request.body;
+    const body = request.data;
     const blog = new Blog({
-        title: title,
-        author: author,
-        url: url,
-        likes: likes
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes
     });
     blog
-        .save({})
+        .save()
         .then(res => {
             response.json(res);
+        })
+        .catch(error => {
+            console.log(error);
         });
 });
 

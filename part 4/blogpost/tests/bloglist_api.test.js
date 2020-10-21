@@ -16,7 +16,7 @@ const initialBlogs = [
         'author': 'L Gvetadze',
         'url': 'different link',
         'likes': 10
-    }
+    },
 ];
 
 beforeEach(async () => {
@@ -46,6 +46,23 @@ test('blogs should have an id property', async () => {
     const response = await api.get('/api/blogs');
     expect(response.body[0].id).toBeDefined();
 });
+
+test('creating a new blog should work', async () => {
+    const newBlog = {
+        'title': 'blog created by test',
+        'author': 'tester',
+        'url': 'localhost:3003',
+        'likes': 0
+    };
+
+    try {
+        await api.post('/api/blogs').send(newBlog).expect(200);
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
 
 afterAll(() => {
     mongoose.connection.close();
