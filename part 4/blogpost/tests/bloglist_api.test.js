@@ -77,6 +77,19 @@ describe('HTTP POST Method Tests', () => {
     });
 });
 
+describe('HTTP DELETE Method Tests', () => {
+    test('deleting a blog should return a status of 200', async () => {
+        const blogsAtStart = await testHelper.blogsInDb();
+        const blog = blogsAtStart[0];
+
+        await api
+                .delete(`/api/blogs/${blog.id}`)
+                .expect(200)
+        
+        const blogsAfterDeletion = await testHelper.blogsInDb();
+        expect(blogsAfterDeletion.length).toBe(blogsAtStart.length - 1);
+    });
+})
 
 afterAll(() => {
     mongoose.connection.close();
