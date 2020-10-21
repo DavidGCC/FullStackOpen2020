@@ -51,8 +51,8 @@ describe('HTTP POST Method Tests', () => {
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
     
-        const blogsinDb = await testHelper.blogsInDb();
-        expect(blogsinDb.length).toBe(testHelper.initialBlogs.length + 1);
+        const blogs = await testHelper.blogsInDb();
+        expect(blogs.length).toBe(testHelper.initialBlogs.length + 1);
     
         let titles = await testHelper.blogsInDb();
         titles = titles.map(blog => blog.title);
@@ -71,8 +71,8 @@ describe('HTTP POST Method Tests', () => {
                 .send(blog)
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
-        const blogsinDb = await testHelper.blogsInDb();
-        const like = blogsinDb.find(blog => blog.title === 'unspecified likes').likes;
+        const blogs = await testHelper.blogsInDb();
+        const like = blogs.find(blog => blog.title === 'unspecified likes').likes;
         expect(like).toBe(0);
     });
 });
