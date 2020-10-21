@@ -8,7 +8,7 @@ router.get('/', async (request, response) => {
 });
 
 
-router.post('/', (request, response) => {
+router.post('/', async (request, response) => {
     const body = request.body;
     const blog = new Blog({
         title: body.title,
@@ -16,11 +16,8 @@ router.post('/', (request, response) => {
         url: body.url,
         likes: body.likes
     });
-    blog
-        .save()
-        .then(res => {
-            response.json(res);
-        });
+    const res = await blog.save({});
+    response.json(res.toJSON());
 });
 
 module.exports = router;
