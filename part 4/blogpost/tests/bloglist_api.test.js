@@ -4,6 +4,7 @@ const supertest = require('supertest');
 const Blog = require('../models/blog');
 const logger = require('../utils/logger');
 const testHelper = require('./test_helper');
+const { post } = require('../app');
 
 const api = supertest(app);
 beforeEach(async () => {
@@ -37,7 +38,7 @@ describe('HTTP GET Method Tests', () => {
 
 describe('HTTP POST Method Tests', () => {
     test('creating a new blog should work', async () => {
-        const newBlog = {
+        const blog = {
             'title': 'blog created by test',
             'author': 'tester',
             'url': 'localhost:3003',
@@ -46,7 +47,7 @@ describe('HTTP POST Method Tests', () => {
     
         await api
                 .post('/api/blogs')
-                .send(newBlog)
+                .send(blog)
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
     
@@ -56,6 +57,23 @@ describe('HTTP POST Method Tests', () => {
         let titles = await testHelper.blogsInDb();
         titles = titles.map(blog => blog.title);
         expect(titles).toContain('blog created by test');
+    });
+    
+    test('if likes property isn\'t specified it should default to 0', async () => {
+        const blog = {
+            'title': 'unspecified likes',
+            'author': 'somebody',
+            'url': 'anotherUrl'
+        };
+
+        await api
+                .post('/api/blogs')
+                .send(blog)
+                .expect(200)
+                .expect('Content-Type', /application\/json/);
+        const blogsinDb = await testHelper.blogsInDb();
+        const like = blogsinDb.find(blog => blog.title === 'unspecified likes').likes;
+        expect(like).toBe(0);
     });
 });
 
