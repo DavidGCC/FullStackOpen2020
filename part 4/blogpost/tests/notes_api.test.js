@@ -42,6 +42,11 @@ test('2 blogs should be returned', async () => {
     expect(response.body.length).toBe(initialBlogs.length);
 });
 
+test('blogs should have an id property', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body[0].id).toBeDefined();
+});
+
 afterAll(() => {
     mongoose.connection.close();
 })
