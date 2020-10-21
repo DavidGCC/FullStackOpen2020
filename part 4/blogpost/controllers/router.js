@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { response } = require('express');
 const { request } = require('../app');
 const Blog = require('../models/blog');
 const logger = require('../utils/logger');
@@ -7,6 +8,15 @@ router.get('/', async (request, response) => {
     const res = await Blog.find({});
     response.json(res);
 });
+
+router.get('/:id', async (request, response, next) => {
+    try {
+        const res = await Blog.findById(request.params.id);
+        response.json(res);
+    } catch (error) {
+        next(error);
+    }
+})
 
 
 router.post('/', async (request, response, next) => {

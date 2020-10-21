@@ -34,6 +34,13 @@ describe('HTTP GET Method Tests', () => {
         const response = await api.get('/api/blogs');
         expect(response.body[0].id).toBeDefined();
     });
+
+    test('it should be possible to return single blog with id', async () => {
+        const blogs = await testHelper.blogsInDb();
+        const blog = blogs[0];
+        const response = await api.get(`/api/blogs/${blog.id}`);
+        expect(response.body).toEqual(blog.toJSON());
+    })
 });
 
 describe('HTTP POST Method Tests', () => {
