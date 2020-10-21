@@ -7,16 +7,21 @@ const config = require('./utils/config');
 const logger = require('./utils/logger');
 
 const mongoUrl = config.MONGODB_URL;
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+mongoose
+    .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(res => {
         logger.info('Connected to MongoDB');
     })
     .catch(err => {
         logger.error('Couldn\'t connect to MongoDB', err);
     });
+
+
+
+app.use(cors());
+app.use(express.json());
+
 app.use('/api/blogs', router);
-app.use(cors())
-app.use(express.json())
 
 
 module.exports = app;

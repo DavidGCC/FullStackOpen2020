@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const app = require('../app');
 const supertest = require('supertest');
 const Blog = require('../models/blog');
+const logger = require('../utils/logger');
 
 const api = supertest(app);
 const initialBlogs = [
@@ -55,12 +56,17 @@ test('creating a new blog should work', async () => {
         'likes': 0
     };
 
-    try {
-        await api.post('/api/blogs').send(newBlog).expect(200);
-    } catch (error) {
-        console.log(error);
-    }
+    await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
 
+    const response = await api.get('/api/blogs');
+    expect(response.body.length).toBe(initialBlogs.length + 1);
+
+    const titles = response.body.map(i => i.title);
+    expect(titles).toContain('blog created by test');
 });
 
 

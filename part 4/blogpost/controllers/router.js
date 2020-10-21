@@ -9,7 +9,7 @@ router.get('/', async (request, response) => {
 
 
 router.post('/', (request, response) => {
-    const body = request.data;
+    const body = request.body;
     const blog = new Blog({
         title: body.title,
         author: body.author,
@@ -20,9 +20,6 @@ router.post('/', (request, response) => {
         .save()
         .then(res => {
             response.json(res);
-        })
-        .catch(error => {
-            console.log(error);
         });
 });
 
