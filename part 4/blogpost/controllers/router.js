@@ -16,7 +16,7 @@ router.get('/:id', async (request, response, next) => {
     } catch (error) {
         next(error);
     }
-})
+});
 
 
 router.post('/', async (request, response, next) => {
@@ -30,6 +30,16 @@ router.post('/', async (request, response, next) => {
         });
         const res = await blog.save({});
         response.json(res.toJSON());
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.put('/:id', async (request, response, next) => {
+    const body = request.body;
+    try {
+        const res = await Blog.findByIdAndUpdate(request.params.id, body, { runValidators: true, new: true });
+        response.json(res);
     } catch (error) {
         next(error);
     }

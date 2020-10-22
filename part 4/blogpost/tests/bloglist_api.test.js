@@ -96,7 +96,24 @@ describe('HTTP DELETE Method Tests', () => {
         const blogsAfterDeletion = await testHelper.blogsInDb();
         expect(blogsAfterDeletion.length).toBe(blogsAtStart.length - 1);
     });
-})
+});
+
+describe('HTTP PUT Method Tests', () => {
+    test('updating a blog should work', async () => {
+        const blogs = await testHelper.blogsInDb();
+        const blog = blogs[0];
+        const newBlog = {
+            'title': 'This is an updated title',
+        };
+        const response = await api
+                .put(`/api/blogs/${blog.id}`)
+                .send(newBlog)
+                .expect(200);
+        const blogsAfterUpdate = await testHelper.blogsInDb();
+        const blogAfterUpdate = blogsAfterUpdate[0];
+        expect(blogAfterUpdate.title).toEqual(newBlog.title);
+    });
+});
 
 afterAll(() => {
     mongoose.connection.close();
