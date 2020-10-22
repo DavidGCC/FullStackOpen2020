@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { param } = require('../controllers/router');
 
 const info = (...params) => {
     if (process.env.NODE_ENV !== 'test') {
