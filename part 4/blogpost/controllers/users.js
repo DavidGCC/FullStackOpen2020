@@ -10,6 +10,10 @@ router.get('/', async (request, response) => {
 
 router.post('/', async (request, response, next) => {
     const body = request.body;
+
+    if (!body.password || body.password < 3) {
+        return response.status(400).send({error: 'Password must be at least 3 characters long!'});
+    }
     
     const salt = 10;
     try {
