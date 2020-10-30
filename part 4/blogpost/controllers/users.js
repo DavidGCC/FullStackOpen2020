@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/user');
+const Blog = require('../models/blog');
 const bcrypt = require('bcrypt');
 
 
@@ -23,8 +24,8 @@ router.post('/', async (request, response, next) => {
             name: body.name,
             passwordHash
         });
-
         const res = await user.save({});
+        //PLACEHOLDER
         response.json(res);
     } catch (error) {
         next(error);
