@@ -4,14 +4,6 @@ const User = require('../models/user');
 const logger = require('../utils/logger');
 const jwt = require('jsonwebtoken');
 
-const getToken = (request) => {
-    const auth = request.get('authorization');
-
-    if (auth && auth.toLowerCase().startsWith('bearer ')) {
-        return auth.substring(7);
-    }
-    return null;
-}
 
 
 router.get('/', async (request, response) => {
@@ -31,8 +23,8 @@ router.get('/:id', async (request, response, next) => {
 
 router.post('/', async (request, response, next) => {
     const body = request.body;
+    token = request.token;
     try {
-        const token = getToken(request);
         const decodedToken = jwt.verify(token, process.env.SECRET);
 
         if (!token || !decodedToken) {
