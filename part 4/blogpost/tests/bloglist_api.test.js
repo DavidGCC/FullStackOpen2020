@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 const app = require('../app');
 const supertest = require('supertest');
 const Blog = require('../models/blog');
-const logger = require('../utils/logger');
+const User = require('../models/user');
 const testHelper = require('./test_helper');
-const { post } = require('../app');
 
 const api = supertest(app);
 beforeEach(async () => {
@@ -112,6 +111,56 @@ describe('HTTP PUT Method Tests', () => {
         const blogsAfterUpdate = await testHelper.blogsInDb();
         const blogAfterUpdate = blogsAfterUpdate[0];
         expect(blogAfterUpdate.title).toEqual(newBlog.title);
+    });
+});
+
+describe('Tests for Users', () => {
+    beforeEach(async () => {
+        await User.deleteMany({});
+
+        let user = new User(testHelper.initialUsers[0]);
+        await user.save();
+
+        user = new User(testHelper.initialUsers[1]);
+        await user.save();
+    });
+
+    describe('HTTP POST for users', () => {
+        test('adding a user should work', async () => {
+            const usersAtStart = await testHelper.usersInDb();
+            const startUsersLength = usersAtStart.length;
+            
+            const user = {
+                'username': 'datunia',
+                'name': 'datiko',
+                'password': '5544332211'
+            };
+
+            const response = await api
+                    .post('/api/users')
+                    .send(user)
+                    .expect(200)
+            expect(response).toBeDefined();
+            const usersAfter = await testHelper.usersInDb();
+            expect(usersAfter.length).toBe(startUsersLength + 1);
+            expect(response.body.password).toBeUndefined();
+            expect(response.body.passwordHash).toBeUndefined();
+            expect(response.body.name).toBe('datiko');
+
+        });
+
+        test('adding an user with invalid input should return an error', async () => {
+            const usersAtStart = await testHelper.usersInDb();
+
+            const user = {
+                'username': 'gdatuna',
+                'name': 'datunia',
+            };
+            await api
+                    .post('/api/users')
+                    .send(user)
+                    .expect(400);
+        });
     });
 });
 
