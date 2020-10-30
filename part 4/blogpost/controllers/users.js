@@ -25,7 +25,6 @@ router.post('/', async (request, response, next) => {
             passwordHash
         });
         const res = await user.save({});
-        //PLACEHOLDER
         response.json(res);
     } catch (error) {
         next(error);
