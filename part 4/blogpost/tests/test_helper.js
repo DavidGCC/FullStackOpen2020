@@ -18,14 +18,9 @@ const initialBlogs = [
 
 const initialUsers = [
     {
-        'username': 'datunag',
-        'name': 'David',
-        'password': '1122334455'
-    },
-    {
-        'username': 'gdatuna',
-        'name': 'David',
-        'password': '1357924680'
+        'username': 'root',
+        'name': 'Root',
+        'password': 'password'
     }
 ]
 

@@ -6,16 +6,22 @@ const User = require('../models/user');
 const testHelper = require('./test_helper');
 
 const api = supertest(app);
+let token = '';
+beforeAll(async () => {
+    await User.deleteMany({});
+    await api.post('/api/users').send(testHelper.initialUsers[0]);
+    const response = await api.post('/api/login').send({'username': 'root', 'password': 'password'});
+    token = response.body.token;
+})
 beforeEach(async () => {
     await Blog.deleteMany({});
 
-    let blog = new Blog(testHelper.initialBlogs[0])
-    await blog.save();
+    let blog = testHelper.initialBlogs[0];
+    await api.post('/api/blogs').send(blog).set('Authorization', `bearer ${token}`)
 
-    blog = new Blog(testHelper.initialBlogs[0]);
-    await blog.save();
+    blog = testHelper.initialBlogs[0];
+    await api.post('/api/blogs').send(blog).set('Authorization', `bearer ${token}`)
 });
-
 describe('HTTP GET Method Tests', () => {
     test('blogs are returned as json', async () => {
         await api
@@ -38,7 +44,7 @@ describe('HTTP GET Method Tests', () => {
         const blogs = await testHelper.blogsInDb();
         const blog = blogs[0];
         const response = await api.get(`/api/blogs/${blog.id}`);
-        expect(response.body).toEqual(blog.toJSON());
+        expect(response.body.user).toBeDefined();
     })
 });
 
@@ -54,6 +60,7 @@ describe('HTTP POST Method Tests', () => {
         await api
                 .post('/api/blogs')
                 .send(blog)
+                .set('Authorization', `bearer ${token}`)
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
     
@@ -75,11 +82,24 @@ describe('HTTP POST Method Tests', () => {
         await api
                 .post('/api/blogs')
                 .send(blog)
+                .set('Authorization', `bearer ${token}`)
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
         const blogs = await testHelper.blogsInDb();
         const like = blogs.find(blog => blog.title === 'unspecified likes').likes;
         expect(like).toBe(0);
+    });
+    test('if token isn\'t provided server responds with 401 status code', async () => {
+        const blog = {
+            'title': 'this will not be created',
+            'author': 'tester',
+            'url': 'localhost:3003',
+            'likes': 0
+        };
+        await api
+                .post('/api/blogs')
+                .send(blog)
+                .expect(401)
     });
 });
 
@@ -90,11 +110,23 @@ describe('HTTP DELETE Method Tests', () => {
 
         await api
                 .delete(`/api/blogs/${blog.id}`)
+                .set('Authorization', `bearer ${token}`)
                 .expect(200)
         
         const blogsAfterDeletion = await testHelper.blogsInDb();
         expect(blogsAfterDeletion.length).toBe(blogsAtStart.length - 1);
     });
+
+    test('if token isn\'t provided blog won\'t be deleted and response will be 401', async () => {
+        const blogsAtStart = await testHelper.blogsInDb();
+        const blog = blogsAtStart[0];
+
+        await api
+            .delete(`/api/blogs/${blog.id}`)
+            .expect(401)
+        const blogsAfterDeletion = await testHelper.blogsInDb();
+        expect(blogsAfterDeletion.length).toBe(blogsAtStart.length);
+    })
 });
 
 describe('HTTP PUT Method Tests', () => {
@@ -107,23 +139,27 @@ describe('HTTP PUT Method Tests', () => {
         const response = await api
                 .put(`/api/blogs/${blog.id}`)
                 .send(newBlog)
+                .set('Authorization', `bearer ${token}`)
                 .expect(200);
         const blogsAfterUpdate = await testHelper.blogsInDb();
         const blogAfterUpdate = blogsAfterUpdate[0];
         expect(blogAfterUpdate.title).toEqual(newBlog.title);
     });
+
+    test('if token isn\'t provided blog won\'t be updated and will respond with status 401', async () => {
+        const blogs = await testHelper.blogsInDb();
+        const blog = blogs[0];
+        const newBlog = {
+            'title': 'This is an updated title',
+        };
+        const response = await api
+                .put(`/api/blogs/${blog.id}`)
+                .send(newBlog)
+                .expect(401);
+    })
 });
 
 describe('Tests for Users', () => {
-    beforeEach(async () => {
-        await User.deleteMany({});
-
-        let user = new User(testHelper.initialUsers[0]);
-        await user.save();
-
-        user = new User(testHelper.initialUsers[1]);
-        await user.save();
-    });
 
     describe('HTTP POST for users', () => {
         test('adding a user should work', async () => {
@@ -161,6 +197,7 @@ describe('Tests for Users', () => {
                     .send(user)
                     .expect(400);
         });
+
     });
 });
 

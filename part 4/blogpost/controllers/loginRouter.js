@@ -15,7 +15,6 @@ router.post('/', async (request, response) => {
             error: 'invalid username or password'
         })
     }
-    console.log('got here');
     const userForToken = {
         username: user.username,
         id: user._id
