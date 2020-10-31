@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
+import Logout from './components/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login';
 
@@ -9,10 +10,19 @@ const App = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
+
     useEffect(() => {
         blogService.getAll().then(blogs =>
             setBlogs(blogs)
         )
+    }, [])
+
+    useEffect(() => {
+        if (window.localStorage.getItem('loggedInUser')) {
+            setUser(JSON.parse(window.localStorage.getItem('loggedInUser')));
+        } else {
+            setUser(null);
+        }
     }, [])
 
     const handleNameChange = (event) => setUsername(event.target.value) 
@@ -31,8 +41,15 @@ const App = () => {
             console.error('Wrong credentials');
         }
     }
+    const handleLogout = (event) => {
+        event.preventDefault();
+        if (window.confirm('Are you sure you want to log out?')) {
+            window.localStorage.removeItem('loggedInUser');
+            setUser(null);
+        }
+    }
 
-    const LoginForm = () => {
+    const loginDisplay = () => {
         return user === null 
         ? <Login 
                 username={username} 
@@ -40,14 +57,12 @@ const App = () => {
                 handleNameChange={handleNameChange} 
                 handlePasswordChange={handlePasswordChange} 
                 handleLogin={handleLogin} />
-        : (
-            <h3>{user.name} is Logged In</h3>
-        )
+        : <Logout name={user.name} handleLogout={handleLogout} />
     }
 
     return (
         <div>
-            {LoginForm()}
+            {loginDisplay()}
             <h2>blogs</h2>
             {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
