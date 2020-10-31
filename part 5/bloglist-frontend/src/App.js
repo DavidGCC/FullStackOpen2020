@@ -9,7 +9,6 @@ const App = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState('');
     useEffect(() => {
         blogService.getAll().then(blogs =>
             setBlogs(blogs)
