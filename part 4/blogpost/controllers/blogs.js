@@ -13,8 +13,8 @@ router.get('/', async (request, response) => {
 
 router.get('/:id', async (request, response, next) => {
     try {
-        const res = await Blog.findById(request.params.id);
-        response.json(res);
+        const res = await Blog.findById(request.params.id).populate('user', {username: 1, name: 1});
+        response.json(res.toJSON());
     } catch (error) {
         next(error);
     }
@@ -54,8 +54,16 @@ router.post('/', async (request, response, next) => {
 
 router.put('/:id', async (request, response, next) => {
     const body = request.body;
+    const token = request.token;
     try {
-        const res = await Blog.findByIdAndUpdate(request.params.id, body, { runValidators: true, new: true });
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+        const blogToUpdate = await Blog.findById(request.params.id);
+        if (!token || !decodedToken) {
+            return response.status(401).json({error: 'token missing or invalid'});
+        } else if (blogToUpdate.user.toString() !== decodedToken.id) {
+            return response.status(401).json({error: 'you don\'t have the permission to perform specified action'})
+        }
+        const res = await blogToUpdate.updateOne(body, {runValidators: true, new: true});
         response.json(res);
     } catch (error) {
         next(error);
@@ -63,8 +71,17 @@ router.put('/:id', async (request, response, next) => {
 });
 
 router.delete('/:id', async (request, response, next) => {
+    const token = request.token;
     try {
-        await Blog.findByIdAndRemove(request.params.id);
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+        const blogToDelete = await Blog.findById(request.params.id);
+        if (!token || !decodedToken) {
+            return response.status(401).json({error: 'token missing or invalid'});
+        } else if (blogToDelete.user.toString() !== decodedToken.id) {
+            return response.status(401).json({error: 'you don\'t have the permission to perform specified action'});
+        } 
+        await blogToDelete.deleteOne();
+
         response.status(200).end();
     } catch (error) {
         next(error);
