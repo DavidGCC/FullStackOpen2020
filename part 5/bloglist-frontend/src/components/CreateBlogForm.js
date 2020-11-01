@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CreateBlogField from './CreateBlogField';
 
-const CreateBlogForm = ( { title, author, url, handleAuthorChange, handleTitleChange, handleUrlChange, handleBlogSubmit } ) => {
+const CreateBlogForm = ({ createBlog }) => {
+
+    const [author, setAuthor] = useState('');
+    const [title, setTitle] = useState('');
+    const [url, setUrl] = useState('');
+
+    const handleTitleChange = (event) => setTitle(event.target.value)
+    const handleAuthorChange = event => setAuthor(event.target.value)
+    const handleUrlChange = event => setUrl(event.target.value)
+    
+    const handleBlogSubmit = event => {
+        event.preventDefault();
+        createBlog({
+            'title': title,
+            'author': author,
+            'url': url
+        });
+
+        setAuthor('');
+        setTitle('');
+        setUrl('');
+    }
+
     return (
         <form onSubmit={handleBlogSubmit}>
             <h2>Create New Blog</h2>

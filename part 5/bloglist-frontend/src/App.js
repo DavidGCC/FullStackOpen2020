@@ -11,13 +11,11 @@ import blogService from './services/blogs'
 import loginService from './services/login';
 
 const App = () => {
+
     const [blogs, setBlogs] = useState([])
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
-    const [author, setAuthor] = useState('');
-    const [title, setTitle] = useState('');
-    const [url, setUrl] = useState('');
     const [message, setMessage] = useState(null);
 
     const blogFormRef = useRef();
@@ -41,9 +39,6 @@ const App = () => {
 
     const handleNameChange = (event) => setUsername(event.target.value) 
     const handlePasswordChange = (event) => setPassword(event.target.value)
-    const handleTitleChange = (event) => setTitle(event.target.value)
-    const handleAuthorChange = event => setAuthor(event.target.value)
-    const handleUrlChange = event => setUrl(event.target.value)
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -53,13 +48,15 @@ const App = () => {
             setUser(user);
             window.localStorage.setItem('CU', JSON.stringify(user));
             blogService.setToken(user.token);
+
             setUsername('');
             setPassword('');
+
             setMessage({success: true, text: `${user.name} successfully logged in`});
             clearMessage();
         } catch (error) {
             setUser(null);
-            console.error('Wrong credentials');
+
             setMessage({error: true, text: `Wrong Username or Password.`});
             clearMessage();
         }
@@ -68,31 +65,21 @@ const App = () => {
         event.preventDefault();
         if (window.confirm('Are you sure you want to log out?')) {
             window.localStorage.removeItem('CU');
-            setMessage({succes: true, text: `${user.name} logged out successfully.`});
-            clearMessage();
             setUser(null);
         }
     }
-    const handleBlogSubmit = async event => {
-        event.preventDefault();
+    
+    const createBlog = async blog => {
         try {
-            const data = await blogService.createBlog({
-                'title': title,
-                'author': author,
-                'url': url
-            });
-            const newBlogs = blogs.concat(data);
-            setBlogs(newBlogs);
-            setMessage({success: true, text: `Created a new blog ${data.title} by ${data.author}.`});
-            blogFormRef.current.toggleVisibility();
+            const response = await blogService.createBlog(blog);
+            setBlogs(blogs.concat(response));
+
+            setMessage({success: true, text: `Created new blog ${blog.title} by ${blog.author}`});
             clearMessage();
         } catch (error) {
-            setMessage({error: true, text: `Couldn't create new blog message: ${error.message}`})
+            setMessage({error: true, text: `Couldn't create blog. Message: ${error.message}`})
             clearMessage();
         }
-        setTitle('');
-        setAuthor('');
-        setUrl('');
     }
 
     const display = () => {
@@ -103,7 +90,7 @@ const App = () => {
                 <Logout {...{user, handleLogout}} />
                 <br />
                 <Togglable ref={blogFormRef}>
-                    <CreateBlogForm {...{author, title, url, handleAuthorChange, handleTitleChange, handleUrlChange, handleBlogSubmit}} />
+                    <CreateBlogForm {...{createBlog}} />
                 </Togglable>
                 <h2>Added Blogs</h2>
                 { blogs.map(blog => <Blog key={blog.id} blog={blog} />) }
