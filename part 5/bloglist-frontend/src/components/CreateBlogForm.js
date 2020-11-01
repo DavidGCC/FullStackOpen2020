@@ -8,6 +8,7 @@ const CreateBlogForm = ( { title, author, url, handleAuthorChange, handleTitleCh
             <CreateBlogField text='Title' value={title} handleChange={handleTitleChange} />
             <CreateBlogField text='Author' value={author} handleChange={handleAuthorChange} />
             <CreateBlogField text='Url' value={url} handleChange={handleUrlChange} />
+            <br />
             <button>Create New Blog</button>
         </form>
     )

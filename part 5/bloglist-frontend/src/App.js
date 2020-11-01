@@ -4,6 +4,7 @@ import Blog from './components/Blog'
 import Login from './components/Login'
 import Logout from './components/Logout'
 import CreateBlogForm from './components/CreateBlogForm'
+import Notification from './components/Notification'
 
 import blogService from './services/blogs'
 import loginService from './services/login';
@@ -16,6 +17,9 @@ const App = () => {
     const [author, setAuthor] = useState('');
     const [title, setTitle] = useState('');
     const [url, setUrl] = useState('');
+    const [message, setMessage] = useState(null);
+
+    const clearMessage = () => setTimeout(() => setMessage(null), 5000);
 
     useEffect(() => {
         blogService.getAll().then(blogs =>
@@ -48,33 +52,46 @@ const App = () => {
             blogService.setToken(user.token);
             setUsername('');
             setPassword('');
+            setMessage({success: true, text: `${user.name} successfully logged in`});
+            clearMessage();
         } catch (error) {
             setUser(null);
             console.error('Wrong credentials');
+            setMessage({error: true, text: `Wrong Username or Password.`});
+            clearMessage();
         }
     }
     const handleLogout = (event) => {
         event.preventDefault();
         if (window.confirm('Are you sure you want to log out?')) {
             window.localStorage.removeItem('CU');
+            setMessage({succes: true, text: `${user.name} logged out successfully.`});
+            clearMessage();
             setUser(null);
         }
     }
     const handleBlogSubmit = async event => {
         event.preventDefault();
-        const data = await blogService.createBlog({
-            'title': title,
-            'author': author,
-            'url': url
-        });
-        const newBlogs = blogs.concat(data);
-        setBlogs(newBlogs);
+        try {
+            const data = await blogService.createBlog({
+                'title': title,
+                'author': author,
+                'url': url
+            });
+            const newBlogs = blogs.concat(data);
+            setBlogs(newBlogs);
+            setMessage({success: true, text: `Created a new blog ${data.title} by ${data.author}.`});
+            clearMessage();
+        } catch (error) {
+            setMessage({error: true, text: `Couldn't create new blog message: ${error.message}`})
+            clearMessage();
+        }
         setTitle('');
         setAuthor('');
         setUrl('');
     }
 
-    const loginDisplay = () => {
+    const display = () => {
         return user === null 
         ? <Login {...{username, password, handleNameChange, handlePasswordChange, handleLogin}} />
         : (
@@ -91,7 +108,8 @@ const App = () => {
     return (
         <div>
             <h1>Bloglist</h1>
-            {loginDisplay()}
+            { message && <Notification {...{message}} />}
+            {display()}
         </div>
     )
 }
