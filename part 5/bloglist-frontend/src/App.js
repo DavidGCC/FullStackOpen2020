@@ -13,8 +13,6 @@ import loginService from './services/login';
 const App = () => {
 
     const [blogs, setBlogs] = useState([])
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
     const [message, setMessage] = useState(null);
 
@@ -22,11 +20,7 @@ const App = () => {
 
     const clearMessage = () => setTimeout(() => setMessage(null), 5000);
 
-    useEffect(() => {
-        blogService.getAll().then(blogs =>
-            setBlogs(blogs)
-        )
-    }, [])
+    useEffect(() => { blogService.getAll().then(blogs =>setBlogs(blogs)) }, [])
 
     useEffect(() => {
         const loggedInUser = window.localStorage.getItem('CU');
@@ -37,26 +31,17 @@ const App = () => {
         }
     }, [])
 
-    const handleNameChange = (event) => setUsername(event.target.value) 
-    const handlePasswordChange = (event) => setPassword(event.target.value)
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
+    const login = async (username, password) => {
         try {
             const user = await loginService.login(username, password);
-
             setUser(user);
             window.localStorage.setItem('CU', JSON.stringify(user));
             blogService.setToken(user.token);
 
-            setUsername('');
-            setPassword('');
-
             setMessage({success: true, text: `${user.name} successfully logged in`});
             clearMessage();
         } catch (error) {
-            setUser(null);
-
             setMessage({error: true, text: `Wrong Username or Password.`});
             clearMessage();
         }
@@ -95,7 +80,7 @@ const App = () => {
 
     const display = () => {
         return user === null 
-        ? <Login {...{username, password, handleNameChange, handlePasswordChange, handleLogin}} />
+        ? <Login login={login} />
         : (
             <div>
                 <Logout {...{user, handleLogout}} />
