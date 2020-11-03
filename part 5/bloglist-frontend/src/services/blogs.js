@@ -20,5 +20,13 @@ const createBlog = async blog => {
     return response.data;
 }
 
+const like = async blog => {
+    const id = blog.id;
+    const config = {
+        headers: { likeOnly: 1, Authorization: token }
+    }
+    const response = await axios.put(`${baseUrl}/${id}`, {likes: blog.likes + 1}, config);
+    return response.data;
+}
 
-export default { getAll, createBlog, setToken }
+export default { getAll, createBlog, setToken, like }

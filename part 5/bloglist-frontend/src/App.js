@@ -82,6 +82,17 @@ const App = () => {
         }
     }
 
+    const handleLike = async (blog) => {
+        try {
+            await blogService.like(blog);
+            const response = await blogService.getAll();
+            setBlogs(response);
+        } catch (error) {
+            setMessage({error: true, text: `Couldn't like blog ${blog.title}. Message: ${error.response.data.error}`});
+            clearMessage();
+        }
+    }
+
     const display = () => {
         return user === null 
         ? <Login {...{username, password, handleNameChange, handlePasswordChange, handleLogin}} />
@@ -93,7 +104,7 @@ const App = () => {
                     <CreateBlogForm {...{createBlog}} />
                 </Togglable>
                 <h2>Added Blogs</h2>
-                { blogs.map(blog => <Blog key={blog.id} blog={blog} />) }
+                { blogs.map(blog => <Blog key={blog.id} blog={blog} handleLike={handleLike} />) }
             </div>
         )
     }
