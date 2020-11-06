@@ -1,5 +1,5 @@
-import React from 'react';
-import propTypes from 'prop-types';
+import React from 'react'
+import propTypes from 'prop-types'
 
 const Logout = ( { user, handleLogout } ) => {
     return (
@@ -15,4 +15,4 @@ Logout.propTypes = {
     handleLogout: propTypes.func.isRequired
 }
 
-export default Logout;
+export default Logout

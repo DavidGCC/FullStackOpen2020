@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import propTypes from 'prop-types';
+import React, { useState } from 'react'
+import propTypes from 'prop-types'
 
 const Login = ( { login } ) => {
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
 
-    const handleNameChange = event => setUsername(event.target.value);
-    const handlePasswordChange = event => setPassword(event.target.value);
+    const handleNameChange = event => setUsername(event.target.value)
+    const handlePasswordChange = event => setPassword(event.target.value)
 
     const handleLogin = (event) => {
-        event.preventDefault();
-        login(username, password);
+        event.preventDefault()
+        login(username, password)
     }
 
     return (
@@ -44,4 +44,4 @@ Login.propTypes = {
     login: propTypes.func.isRequired
 }
 
-export default Login;
+export default Login

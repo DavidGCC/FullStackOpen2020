@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import CreateBlogField from './CreateBlogField';
-import propTypes from 'prop-types';
+import React, { useState } from 'react'
+import CreateBlogField from './CreateBlogField'
+import propTypes from 'prop-types'
 
 const CreateBlogForm = ({ createBlog }) => {
 
-    const [author, setAuthor] = useState('');
-    const [title, setTitle] = useState('');
-    const [url, setUrl] = useState('');
+    const [author, setAuthor] = useState('')
+    const [title, setTitle] = useState('')
+    const [url, setUrl] = useState('')
 
     const handleTitleChange = (event) => setTitle(event.target.value)
     const handleAuthorChange = event => setAuthor(event.target.value)
     const handleUrlChange = event => setUrl(event.target.value)
-    
+
     const handleBlogSubmit = event => {
-        event.preventDefault();
+        event.preventDefault()
         createBlog({
             'title': title,
             'author': author,
             'url': url
-        });
+        })
 
-        setAuthor('');
-        setTitle('');
-        setUrl('');
+        setAuthor('')
+        setTitle('')
+        setUrl('')
     }
 
     return (
@@ -41,4 +41,4 @@ CreateBlogField.propTypes = {
     createBlog: propTypes.func
 }
 
-export default CreateBlogForm;
+export default CreateBlogForm

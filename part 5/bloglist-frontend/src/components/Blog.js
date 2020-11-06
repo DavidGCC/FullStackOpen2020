@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import propTypes from 'prop-types';
+import propTypes from 'prop-types'
 
 const Blog = ({ blog, handleLike, handleDelete }) => {
 
     const style = { fontSize: '1.5rem', fontFamily: 'sans-serif', border: '1px solid black', width: 1500, padding: 10, boxSizing: 'border-box', marginBottom: 10 }
     const buttonStyle = { fontSize: '1rem' }
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(false)
 
-    const toggleVisibility = () => setVisible(!visible);
+    const toggleVisibility = () => setVisible(!visible)
 
     return (
         <div style={style}>

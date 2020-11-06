@@ -1,5 +1,5 @@
-import React from 'react';
-import propTypes from 'prop-types';
+import React from 'react'
+import propTypes from 'prop-types'
 
 
 const CreateBlogField = ( { text, value, handleChange } ) => {
@@ -8,7 +8,7 @@ const CreateBlogField = ( { text, value, handleChange } ) => {
             <label htmlFor={text}>
                 {text}
                 <br />
-                <input 
+                <input
                     type='text'
                     name={text}
                     value={value}
@@ -25,4 +25,4 @@ CreateBlogField.propTypes = {
     handleChange: propTypes.func.isRequired
 }
 
-export default CreateBlogField;
+export default CreateBlogField

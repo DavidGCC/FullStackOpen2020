@@ -1,5 +1,5 @@
-import React from 'react';
-import propTypes from 'prop-types';
+import React from 'react'
+import propTypes from 'prop-types'
 
 const Notification = ( { message } ) => {
     const messageStyle = {
@@ -8,11 +8,11 @@ const Notification = ( { message } ) => {
         padding: 20
     }
     if (message.error) {
-        messageStyle.color = 'red';
-        messageStyle.border = '3px solid red';
+        messageStyle.color = 'red'
+        messageStyle.border = '3px solid red'
     } else {
-        messageStyle.color = 'green';
-        messageStyle.border = '3px solid green';
+        messageStyle.color = 'green'
+        messageStyle.border = '3px solid green'
     }
 
     return (
@@ -24,4 +24,4 @@ Notification.propTypes = {
     message: propTypes.object.isRequired
 }
 
-export default Notification;
+export default Notification
