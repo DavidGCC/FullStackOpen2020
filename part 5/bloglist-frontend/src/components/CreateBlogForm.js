@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CreateBlogField from './CreateBlogField';
+import propTypes from 'prop-types';
 
 const CreateBlogForm = ({ createBlog }) => {
 
@@ -34,6 +35,10 @@ const CreateBlogForm = ({ createBlog }) => {
             <button>Create New Blog</button>
         </form>
     )
+}
+
+CreateBlogField.propTypes = {
+    createBlog: propTypes.func
 }
 
 export default CreateBlogForm;

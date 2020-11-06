@@ -1,4 +1,6 @@
 import React from 'react';
+import propTypes from 'prop-types';
+
 
 const CreateBlogField = ( { text, value, handleChange } ) => {
     return (
@@ -15,6 +17,12 @@ const CreateBlogField = ( { text, value, handleChange } ) => {
             <br />
         </div>
     )
+}
+
+CreateBlogField.propTypes = {
+    text: propTypes.string.isRequired,
+    value: propTypes.string.isRequired,
+    handleChange: propTypes.func.isRequired
 }
 
 export default CreateBlogField;

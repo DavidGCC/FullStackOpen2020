@@ -95,7 +95,7 @@ const App = () => {
             <div>
                 <Logout {...{user, handleLogout}} />
                 <br />
-                <Togglable ref={blogFormRef}>
+                <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
                     <CreateBlogForm {...{createBlog}} />
                 </Togglable>
                 <h2>Added Blogs</h2>
