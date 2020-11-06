@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import Blog from './components/Blog'
 import Login from './components/Login'
 import Logout from './components/Logout'
 import CreateBlogForm from './components/CreateBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import TogglableBlog from './components/TogglableBlog'
+import FullBlog from './components/FullBlog'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -83,11 +84,29 @@ const App = () => {
             await blogService.deleteBlog(blog)
             const response = await blogService.getAll()
             setBlogs(response)
+            setMessage({ success: true, text: `Successfully deleted blog ${blog.title} by ${blog.author}` })
+            clearMessage()
         } catch (error) {
             setMessage({ error: true, text: `Couldn't delete blog ${blog.title}. Message: ${error.response.data.error}` })
+            clearMessage()
         }
     }
-
+    const CreateFormView = () => {
+        return (
+            <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
+                <CreateBlogForm {...{ createBlog }} />
+            </Togglable>
+        )
+    }
+    const BlogView = (blogs) => {
+        return (
+            blogs.map(blog => (
+                <TogglableBlog key={blog.id} title={blog.title} author={blog.author} defaultButtonText='Show' hiddenButtonText='Hide'>
+                    <FullBlog blog={blog} handleLike={handleLike} handleDelete={handleDelete} />
+                </TogglableBlog>
+            ))
+        )
+    }
     const display = () => {
         return user === null
             ? <Login login={login} />
@@ -95,11 +114,9 @@ const App = () => {
                 <div>
                     <Logout {...{ user, handleLogout }} />
                     <br />
-                    <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
-                        <CreateBlogForm {...{ createBlog }} />
-                    </Togglable>
+                    {CreateFormView()}
                     <h2>Added Blogs</h2>
-                    { blogs.map(blog => <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} />) }
+                    {BlogView(blogs)}
                 </div>
             )
     }
