@@ -16,13 +16,13 @@ const TogglableBlog = (props) => {
 
     return (
         <div style={style}>
-            <div style={hideWhenVisible}>
+            <div className="shortBlog" style={hideWhenVisible}>
                 <p>
                     <b>{props.title}</b> by <b>{props.author}</b>
                     <button style={buttonStyle} onClick={toggleVisibility}>{props.defaultButtonText}</button>
                 </p>
             </div>
-            <div style={showWhenVisible} className='togglableContent'>
+            <div style={showWhenVisible} className='togglableContent fullBlog'>
                 <p>
                     <b>{props.title}</b> by <b>{props.author}</b>
                     <button style={buttonStyle} onClick={toggleVisibility}>{props.hiddenButtonText}</button>

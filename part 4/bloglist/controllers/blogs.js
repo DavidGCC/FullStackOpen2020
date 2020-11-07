@@ -55,10 +55,15 @@ router.post('/', async (request, response, next) => {
 router.put('/:id', async (request, response, next) => {
     const body = request.body;
     const token = request.token;
+    const likeAction = request.headers.likeonly;
     try {
         const decodedToken = jwt.verify(token, process.env.SECRET);
         const blogToUpdate = await Blog.findById(request.params.id);
-        if (!token || !decodedToken) {
+        if (likeAction) {
+            const res = await blogToUpdate.updateOne({likes: body.likes});
+            return response.json(res);
+        } else if (!token || !decodedToken) {
+            console.log(request.headers)
             return response.status(401).json({error: 'token missing or invalid'});
         } else if (blogToUpdate.user.toString() !== decodedToken.id) {
             return response.status(401).json({error: 'you don\'t have the permission to perform specified action'})

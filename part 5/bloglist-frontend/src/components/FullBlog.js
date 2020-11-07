@@ -4,7 +4,6 @@ const FullBlog = ({ blog, handleLike, handleDelete }) => {
 
     const buttonStyle = { fontSize: '1rem' }
 
-
     return (
         <div className='fullBlog'>
             <p><b>URL:</b> {blog.url}</p>

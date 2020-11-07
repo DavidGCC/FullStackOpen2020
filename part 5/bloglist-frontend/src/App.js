@@ -99,6 +99,9 @@ const App = () => {
         )
     }
     const BlogView = (blogs) => {
+        blogs.sort((a, b) => {
+            return b.likes - a.likes
+        })
         return (
             blogs.map(blog => (
                 <TogglableBlog key={blog.id} title={blog.title} author={blog.author} defaultButtonText='Show' hiddenButtonText='Hide'>
