@@ -1,20 +1,16 @@
 import React from 'react'
 import { createAction } from '../reducers/anecdoteReducer'
 import { messageAction } from '../reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
-const NewAnecdote = (props) => {
-
-    const dispatch = useDispatch()
-
-
+import { connect } from 'react-redux'
+const NewAnecdote = ({createAction, messageAction}) => {
     const handleSubmit = event => {
         event.preventDefault()
         const value = event.target.anecdote.value
         try {
-            dispatch(messageAction(`Successfully created anecdote ${event.target.anecdote.value}.`, 5))
-            dispatch(createAction(value))
+            messageAction(`Successfully created anecdote ${event.target.anecdote.value}.`, 5)
+            createAction(value)
         } catch (err) {
-            dispatch(messageAction('Couldn\'t create a new anecdote', 5))
+            messageAction('Couldn\'t create a new anecdote', 5)
         }
         event.target.anecdote.value = ''
     }
@@ -31,4 +27,8 @@ const NewAnecdote = (props) => {
     )
 }
 
-export default NewAnecdote
+const mapDispatchToProps = {
+    createAction, messageAction
+}
+
+export default connect(null, mapDispatchToProps)(NewAnecdote)

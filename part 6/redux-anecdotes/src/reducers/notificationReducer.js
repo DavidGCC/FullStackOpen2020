@@ -1,14 +1,15 @@
 const message = {text: null}
 
 
-
+let timeoutID;
 export const messageAction = (text, seconds) => {
     return dispatch => {
+        clearTimeout(timeoutID)
         dispatch({
             type: 'NEW_MESSAGE',
             text
         })
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
             dispatch({
                 type: 'CLEAR'
             })
