@@ -2,18 +2,17 @@ const message = {text: null}
 
 
 
-export const messageAction = (messageType, text) => {
-    return {
-        type: 'NEW_MESSAGE',
-        messageType,
-        text
-    }
-}
-
-
-export const clearAction = () => {
-    return {
-        type: 'CLEAR'
+export const messageAction = (text, seconds) => {
+    return dispatch => {
+        dispatch({
+            type: 'NEW_MESSAGE',
+            text
+        })
+        setTimeout(() => {
+            dispatch({
+                type: 'CLEAR'
+            })
+        }, seconds * 1000)
     }
 }
 

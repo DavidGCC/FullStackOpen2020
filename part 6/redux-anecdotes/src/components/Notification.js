@@ -8,7 +8,6 @@ const Notification = () => {
         padding: 10,
         borderWidth: 1,
     }
-    message.type === 'error' ? style.color =  'red' : style.color = 'green'
     return (
         message.text && (<div style={style}>
             { message.text }

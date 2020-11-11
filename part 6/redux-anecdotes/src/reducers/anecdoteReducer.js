@@ -9,17 +9,23 @@ import anecdoteService from '../services/anecdoteService'
 //     }
 // }
 
-export const voteAction = (id) => {
-    return {
-        type: 'VOTE',
-        id
+export const voteAction = (anecdote) => {
+    return async dispatch => {
+        const response = await anecdoteService.updateAnecdote(anecdote, anecdote.id)
+        dispatch({
+            type: 'VOTE',
+            id: response.id
+        })
     }
 }
 
 export const createAction = (value) => {
-    return {
-        type: 'CREATE',
-        anecdote: value
+    return async dispatch => {
+        const response = await anecdoteService.createAnecdote(value)
+        dispatch({
+            type: 'CREATE',
+            anecdote: response
+        })
     }
 }
 
