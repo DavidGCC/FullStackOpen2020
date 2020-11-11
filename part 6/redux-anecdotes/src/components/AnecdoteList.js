@@ -7,14 +7,12 @@ import anecdoteService from '../services/anecdoteService'
 
 const AnecdoteList = () => {
     const dispatch = useDispatch()
-    const anecdotes = useSelector(state => state.anecdote)
     const filter = useSelector(state => state.filter)
     
     useEffect(() => {
-        anecdoteService.getAll().then(anecdotes => {
-            dispatch(initializeData(anecdotes))
-        })
+        dispatch(initializeData())
     }, [dispatch])
+    const anecdotes = useSelector(state => state.anecdote)
 
     anecdotes.sort((a, b) => b.votes - a.votes)
     let timer;
