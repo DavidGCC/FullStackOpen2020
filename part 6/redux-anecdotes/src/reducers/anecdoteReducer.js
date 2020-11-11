@@ -1,4 +1,4 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
+// const getId = () => (100000 * Math.random()).toFixed(0)
 
 // const asObject = (anecdote) => {
 //     return {
@@ -18,11 +18,7 @@ export const voteAction = (id) => {
 export const createAction = (value) => {
     return {
         type: 'CREATE',
-        anecdote: {
-            content: value,
-            id: getId(),
-            votes: 0
-        }
+        anecdote: value
     }
 }
 

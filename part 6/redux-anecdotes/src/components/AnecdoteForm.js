@@ -2,7 +2,7 @@ import React from 'react'
 import { createAction } from '../reducers/anecdoteReducer'
 import { messageAction, clearAction } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
-
+import anecdoteService from '../services/anecdoteService'
 const NewAnecdote = (props) => {
 
     const dispatch = useDispatch()
@@ -11,12 +11,13 @@ const NewAnecdote = (props) => {
 
     const handleSubmit = event => {
         event.preventDefault()
+        const value = event.target.anecdote.value
         try {
             clearTimeout(timer)
             dispatch(messageAction('success', `Successfully created anecdote ${event.target.anecdote.value}.`))
             setTimeout(() => dispatch(clearAction()), 5000)
-            const value = event.target.anecdote.value
-            dispatch(createAction(value))
+            anecdoteService.createAnecdote(value).then(response => dispatch(createAction(response)))
+            // dispatch(createAction(newAnecdote))
         } catch (err) {
             dispatch(messageAction('error', 'Couldn\'t create a new anecdote'))
             setTimeout(() => dispatch(clearAction()), 5000)
