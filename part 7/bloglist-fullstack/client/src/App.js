@@ -11,9 +11,14 @@ import FullBlog from './components/FullBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { initializeBlogsAction, createBlogAction, likeBlogAction, deleteBlogAction } from './reducers/blogsReducer'
+import { useSelector, useDispatch } from 'react-redux'
+
 const App = () => {
 
-    const [blogs, setBlogs] = useState([])
+    const dispatch = useDispatch()
+
+    const blogs = useSelector(state => state.blogs)
     const [user, setUser] = useState(null)
     const [message, setMessage] = useState(null)
 
@@ -21,7 +26,9 @@ const App = () => {
 
     const clearMessage = () => setTimeout(() => setMessage(null), 5000)
 
-    useEffect(() => { blogService.getAll().then(blogs => setBlogs(blogs)) }, [])
+    useEffect(() => {
+        dispatch(initializeBlogsAction())
+    }, [])
 
     useEffect(() => {
         const loggedInUser = window.localStorage.getItem('CU')
@@ -57,8 +64,7 @@ const App = () => {
 
     const createBlog = async blog => {
         try {
-            const response = await blogService.createBlog(blog)
-            setBlogs(blogs.concat(response))
+            dispatch(createBlogAction(blog))
 
             setMessage({ success: true, text: `Created new blog ${blog.title} by ${blog.author}` })
             clearMessage()
@@ -70,9 +76,9 @@ const App = () => {
 
     const handleLike = async (blog) => {
         try {
-            await blogService.like(blog)
-            const response = await blogService.getAll()
-            setBlogs(response)
+            dispatch(likeBlogAction(blog))
+            setMessage({ success: true, text: `Liked blog ${blog.title}.` })
+            clearMessage()
         } catch (error) {
             setMessage({ error: true, text: `Couldn't like blog ${blog.title}. Message: ${error.response.data.error}` })
             clearMessage()
@@ -81,9 +87,7 @@ const App = () => {
 
     const handleDelete = async (blog) => {
         try {
-            await blogService.deleteBlog(blog)
-            const response = await blogService.getAll()
-            setBlogs(response)
+            dispatch(deleteBlogAction(blog))
             setMessage({ success: true, text: `Successfully deleted blog ${blog.title} by ${blog.author}` })
             clearMessage()
         } catch (error) {
