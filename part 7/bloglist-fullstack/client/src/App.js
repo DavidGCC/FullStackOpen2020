@@ -9,8 +9,8 @@ import TogglableBlog from './components/TogglableBlog'
 import FullBlog from './components/FullBlog'
 
 
-import { initializeBlogsAction, createBlogAction, likeBlogAction, deleteBlogAction } from './reducers/blogsReducer'
-import { loginAction, logoutAction, initializeUser } from './reducers/userReducer'
+import { initializeBlogsAction } from './reducers/blogsReducer'
+import { initializeUser } from './reducers/userReducer'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -19,40 +19,18 @@ const App = () => {
     const dispatch = useDispatch()
 
     const blogs = useSelector(state => state.blogs)
-    const notification = useSelector(state => state.notification)
     const user = useSelector(state => state.user)
 
     const blogFormRef = useRef()
 
 
-    useEffect(() => {
-        dispatch(initializeBlogsAction())
-    }, [])
-
-    useEffect(() => {
-        dispatch(initializeUser())
-    }, [])
-
-
-    const login = async (username, password) => dispatch(loginAction(username, password))
-
-    const handleLogout = (event) => {
-        event.preventDefault()
-        if (window.confirm('Are you sure you want to log out?')) {
-            dispatch(logoutAction(user.name))
-        }
-    }
-
-    const createBlog = async blog => dispatch(createBlogAction(blog))
-
-    const handleLike = async (blog) => dispatch(likeBlogAction(blog))
-
-    const handleDelete = async (blog) => dispatch(deleteBlogAction(blog))
+    useEffect(() => dispatch(initializeBlogsAction()), [])
+    useEffect(() => dispatch(initializeUser()), [])
 
     const CreateFormView = () => {
         return (
             <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
-                <CreateBlogForm {...{ createBlog }} />
+                <CreateBlogForm  />
             </Togglable>
         )
     }
@@ -63,17 +41,17 @@ const App = () => {
         return (
             blogs.map(blog => (
                 <TogglableBlog key={blog.id} title={blog.title} author={blog.author} defaultButtonText='Show' hiddenButtonText='Hide'>
-                    <FullBlog blog={blog} handleLike={handleLike} handleDelete={handleDelete} />
+                    <FullBlog blog={blog} />
                 </TogglableBlog>
             ))
         )
     }
     const display = () => {
         return user === null
-            ? <Login login={login} />
+            ? <Login />
             : (
                 <div>
-                    <Logout {...{ user, handleLogout }} />
+                    <Logout {...{ user }} />
                     <br />
                     {CreateFormView()}
                     <h2>Added Blogs</h2>
@@ -85,7 +63,7 @@ const App = () => {
     return (
         <div>
             <h1>Bloglist</h1>
-            { notification.message && <Notification usage={notification.usage} message={notification.message} />}
+            <Notification />
             {display()}
         </div>
     )

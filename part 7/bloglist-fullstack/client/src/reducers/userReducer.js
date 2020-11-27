@@ -14,8 +14,7 @@ export const initializeUser = () => {
         }
     } else {
         return {
-            type: 'SET',
-            user: null
+            type: 'UNSET'
         }
     }
 }

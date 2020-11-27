@@ -1,12 +1,16 @@
 import React from 'react'
-import propTypes from 'prop-types'
 import { useField } from '../hooks/index'
+import { createBlogAction } from '../reducers/blogsReducer'
+import { useDispatch } from 'react-redux'
 
-const CreateBlogForm = ({ createBlog }) => {
+const CreateBlogForm = () => {
+
+    const dispatch = useDispatch()
 
     const title = useField('text')
     const author = useField('text')
     const url = useField('text')
+
     const handleBlogSubmit = event => {
         event.preventDefault()
         const newBlog = {
@@ -14,7 +18,8 @@ const CreateBlogForm = ({ createBlog }) => {
             'author': author.input.value,
             'url': url.input.value
         }
-        createBlog(newBlog)
+        dispatch(createBlogAction(newBlog))
+
 
         title.reset()
         author.reset()
@@ -32,6 +37,7 @@ const CreateBlogForm = ({ createBlog }) => {
                     {...{ ...title }.input}/>
             </label>
             <br />
+
             <label htmlFor='author'>
                 Author
                 <br />
@@ -40,6 +46,7 @@ const CreateBlogForm = ({ createBlog }) => {
                     {...{ ...author }.input}/>
             </label>
             <br />
+
             <label htmlFor='url'>
                 Url
                 <br />
@@ -48,13 +55,10 @@ const CreateBlogForm = ({ createBlog }) => {
                     {...{ ...url }.input} />
             </label>
             <br />
+
             <button id="createButton">Create New Blog</button>
         </form>
     )
-}
-
-CreateBlogForm.propTypes = {
-    createBlog: propTypes.func
 }
 
 export default CreateBlogForm

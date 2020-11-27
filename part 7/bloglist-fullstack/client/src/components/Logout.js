@@ -1,7 +1,16 @@
 import React from 'react'
+import { logoutAction } from '../reducers/userReducer'
+import { useDispatch } from 'react-redux'
 import propTypes from 'prop-types'
 
-const Logout = ( { user, handleLogout } ) => {
+const Logout = ( { user } ) => {
+    const dispatch = useDispatch()
+    const handleLogout = (event) => {
+        event.preventDefault()
+        if (window.confirm('Are you sure you want to log out?')) {
+            dispatch(logoutAction(user.name))
+        }
+    }
     return (
         <div>
             <h3>{user.name} is Logged In</h3>
@@ -12,7 +21,6 @@ const Logout = ( { user, handleLogout } ) => {
 
 Logout.propTypes = {
     user: propTypes.object,
-    handleLogout: propTypes.func.isRequired
 }
 
 export default Logout
