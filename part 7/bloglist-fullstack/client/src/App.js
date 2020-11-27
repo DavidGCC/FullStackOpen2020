@@ -24,8 +24,8 @@ const App = () => {
     const blogFormRef = useRef()
 
 
-    useEffect(() => dispatch(initializeBlogsAction()), [])
-    useEffect(() => dispatch(initializeUser()), [])
+    useEffect(() => {dispatch(initializeBlogsAction())}, [])
+    useEffect(() => {dispatch(initializeUser())}, [])
 
     const CreateFormView = () => {
         return (
