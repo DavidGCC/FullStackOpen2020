@@ -1,13 +1,13 @@
 import React from 'react'
 import propTypes from 'prop-types'
 
-const Notification = ( { message } ) => {
+const Notification = ( { usage, message } ) => {
     const messageStyle = {
         fontSize: '2rem',
         width: 'fit-content',
         padding: 20
     }
-    if (message.error) {
+    if (usage === 'error') {
         messageStyle.color = 'red'
         messageStyle.border = '3px solid red'
     } else {
@@ -16,12 +16,13 @@ const Notification = ( { message } ) => {
     }
 
     return (
-        <h2 style={messageStyle}>{message.text}</h2>
+        <h2 style={messageStyle}>{message}</h2>
     )
 }
 
 Notification.propTypes = {
-    message: propTypes.object.isRequired
+    message: propTypes.string.isRequired,
+    usage: propTypes.string.isRequired
 }
 
 export default Notification

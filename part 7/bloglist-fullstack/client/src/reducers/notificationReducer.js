@@ -1,32 +1,52 @@
 let timerID
+const initialMessage = {
+    usage: 'idle',
+    message: null
+}
 
-export const setMessage = (usage, message) => {
+export const createSuccessMessage = (message) => {
     return dispatch => {
         dispatch({
-            type: usage,
+            type: 'SUCCESS',
             message
         })
         clearTimeout(timerID)
-        timerID = setTimeout(dispatch({
+        timerID = setTimeout(() => dispatch({
             type: 'CLEAR'
         }), 5000)
     }
 }
 
-const notificationReducer = (state = null, action) => {
+export const createErrorMessage = (message) => {
+    return dispatch => {
+        dispatch({
+            type: 'ERROR',
+            message
+        })
+        clearTimeout(timerID)
+        timerID = setTimeout(() => dispatch({
+            type: 'CLEAR'
+        }), 5000)
+    }
+}
+
+const notificationReducer = (state = initialMessage, action) => {
     switch (action.type) {
     case 'ERROR':
         return {
-            error: true,
-            text: action.message
+            usage: 'error',
+            message: action.message
         }
     case 'SUCCESS':
         return {
-            success: true,
-            text: action.message
+            usage: 'success',
+            message: action.message
         }
     case 'CLEAR':
-        return null
+        return {
+            usage: 'idle',
+            message: null
+        }
     default:
         return state
     }

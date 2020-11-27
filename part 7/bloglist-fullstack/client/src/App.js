@@ -12,6 +12,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 import { initializeBlogsAction, createBlogAction, likeBlogAction, deleteBlogAction } from './reducers/blogsReducer'
+import { createSuccessMessage, createErrorMessage } from './reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
@@ -19,12 +20,11 @@ const App = () => {
     const dispatch = useDispatch()
 
     const blogs = useSelector(state => state.blogs)
+    const notification = useSelector(state => state.notification)
     const [user, setUser] = useState(null)
-    const [message, setMessage] = useState(null)
 
     const blogFormRef = useRef()
 
-    const clearMessage = () => setTimeout(() => setMessage(null), 5000)
 
     useEffect(() => {
         dispatch(initializeBlogsAction())
@@ -47,17 +47,16 @@ const App = () => {
             window.localStorage.setItem('CU', JSON.stringify(user))
             blogService.setToken(user.token)
 
-            setMessage({ success: true, text: `${user.name} successfully logged in` })
-            clearMessage()
+            dispatch(createSuccessMessage(`${user.name} successfully logged in`))
         } catch (error) {
-            setMessage({ error: true, text: 'Wrong Username or Password.' })
-            clearMessage()
+            dispatch(createErrorMessage('Wrong Username or Password.'))
         }
     }
     const handleLogout = (event) => {
         event.preventDefault()
         if (window.confirm('Are you sure you want to log out?')) {
             window.localStorage.removeItem('CU')
+            dispatch(createSuccessMessage(`${user.name} Successfully logged out.`))
             setUser(null)
         }
     }
@@ -66,33 +65,27 @@ const App = () => {
         try {
             dispatch(createBlogAction(blog))
 
-            setMessage({ success: true, text: `Created new blog ${blog.title} by ${blog.author}` })
-            clearMessage()
+            dispatch(createSuccessMessage(`Created new blog ${blog.title} by ${blog.author}`))
         } catch (error) {
-            setMessage({ error: true, text: `Couldn't create blog. Message: ${error.message}` })
-            clearMessage()
+            dispatch(createErrorMessage(`Couldn't create blog. Message: ${error.message}`))
         }
     }
 
     const handleLike = async (blog) => {
         try {
             dispatch(likeBlogAction(blog))
-            setMessage({ success: true, text: `Liked blog ${blog.title}.` })
-            clearMessage()
+            dispatch(createSuccessMessage(`Liked blog ${blog.title}.`))
         } catch (error) {
-            setMessage({ error: true, text: `Couldn't like blog ${blog.title}. Message: ${error.response.data.error}` })
-            clearMessage()
+            dispatch(createErrorMessage(`Couldn't like blog ${blog.title}. Message: ${error.response.data.error}`))
         }
     }
 
     const handleDelete = async (blog) => {
         try {
             dispatch(deleteBlogAction(blog))
-            setMessage({ success: true, text: `Successfully deleted blog ${blog.title} by ${blog.author}` })
-            clearMessage()
+            dispatch(createSuccessMessage(`Successfully deleted blog ${blog.title} by ${blog.author}`))
         } catch (error) {
-            setMessage({ error: true, text: `Couldn't delete blog ${blog.title}. Message: ${error.response.data.error}` })
-            clearMessage()
+            dispatch(createErrorMessage(`Couldn't delete blog ${blog.title}. Message: ${error.response.data.error}`))
         }
     }
     const CreateFormView = () => {
@@ -131,7 +124,7 @@ const App = () => {
     return (
         <div>
             <h1>Bloglist</h1>
-            { message && <Notification {...{ message }} />}
+            { notification.message && <Notification usage={notification.usage} message={notification.message} />}
             {display()}
         </div>
     )
