@@ -1,4 +1,9 @@
 import React, { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
+// NODE MODEULE IMPORTS END
+
+// COMPONENT IMPORTS
 
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -8,17 +13,26 @@ import Togglable from './components/Togglable'
 import TogglableBlog from './components/TogglableBlog'
 import FullBlog from './components/FullBlog'
 
+// COMPONENT IMPORTS END
+
+// REDUCER IMPORTS
 
 import { initializeBlogsAction } from './reducers/blogsReducer'
 import { initializeUser } from './reducers/userReducer'
 
-import { useSelector, useDispatch } from 'react-redux'
+// REDUCER IMPORTS END
+
 
 const App = () => {
 
     const dispatch = useDispatch()
 
-    const blogs = useSelector(state => state.blogs)
+    const blogs = useSelector(state => {
+        const sortedState = state.blogs.sort((a, b) => {
+            return b.likes - a.likes
+        })
+        return sortedState
+    })
     const user = useSelector(state => state.user)
 
     const blogFormRef = useRef()
@@ -35,9 +49,6 @@ const App = () => {
         )
     }
     const BlogView = (blogs) => {
-        blogs.sort((a, b) => {
-            return b.likes - a.likes
-        })
         return (
             blogs.map(blog => (
                 <TogglableBlog key={blog.id} title={blog.title} author={blog.author} defaultButtonText='Show' hiddenButtonText='Hide'>
