@@ -42,22 +42,22 @@ export const deleteBlogAction = blog => {
 
 const blogReducer = (state = [], action) => {
     switch (action.type) {
-    case 'INIT':
-        return action.data
-    case 'CREATE':
-        return [...state, action.blog]
-    case 'DELETE':
-        return state.filter(blog => blog.id !== action.id)
-    case 'LIKE':
-        return state.map(blog => {
-            if (blog.id === action.id) {
-                return { ...blog, likes: blog.likes + 1 }
-            } else {
-                return { ...blog }
-            }
-        })
-    default:
-        return state
+        case 'INIT':
+            return action.data
+        case 'CREATE':
+            return [...state, action.blog]
+        case 'DELETE':
+            return state.filter(blog => blog.id !== action.id)
+        case 'LIKE':
+            return state.map(blog => {
+                if (blog.id === action.id) {
+                    return { ...blog, likes: blog.likes + 1 }
+                } else {
+                    return { ...blog }
+                }
+            })
+        default:
+            return state
     }
 }
 

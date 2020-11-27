@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -8,11 +8,11 @@ import Togglable from './components/Togglable'
 import TogglableBlog from './components/TogglableBlog'
 import FullBlog from './components/FullBlog'
 
-import blogService from './services/blogs'
-import loginService from './services/login'
 
 import { initializeBlogsAction, createBlogAction, likeBlogAction, deleteBlogAction } from './reducers/blogsReducer'
 import { createSuccessMessage, createErrorMessage } from './reducers/notificationReducer'
+import { loginAction, logoutAction, initializeUser } from './reducers/userReducer'
+
 import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
 
     const blogs = useSelector(state => state.blogs)
     const notification = useSelector(state => state.notification)
-    const [user, setUser] = useState(null)
+    const user = useSelector(state => state.user)
 
     const blogFormRef = useRef()
 
@@ -31,33 +31,16 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        const loggedInUser = window.localStorage.getItem('CU')
-        if (loggedInUser) {
-            const user = JSON.parse(loggedInUser)
-            setUser(user)
-            blogService.setToken(user.token)
-        }
+        dispatch(initializeUser())
     }, [])
 
 
-    const login = async (username, password) => {
-        try {
-            const user = await loginService.login(username, password)
-            setUser(user)
-            window.localStorage.setItem('CU', JSON.stringify(user))
-            blogService.setToken(user.token)
+    const login = async (username, password) => dispatch(loginAction(username, password))
 
-            dispatch(createSuccessMessage(`${user.name} successfully logged in`))
-        } catch (error) {
-            dispatch(createErrorMessage('Wrong Username or Password.'))
-        }
-    }
     const handleLogout = (event) => {
         event.preventDefault()
         if (window.confirm('Are you sure you want to log out?')) {
-            window.localStorage.removeItem('CU')
-            dispatch(createSuccessMessage(`${user.name} Successfully logged out.`))
-            setUser(null)
+            dispatch(logoutAction(user.name))
         }
     }
 

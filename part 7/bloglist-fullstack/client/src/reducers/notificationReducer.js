@@ -32,23 +32,23 @@ export const createErrorMessage = (message) => {
 
 const notificationReducer = (state = initialMessage, action) => {
     switch (action.type) {
-    case 'ERROR':
-        return {
-            usage: 'error',
-            message: action.message
-        }
-    case 'SUCCESS':
-        return {
-            usage: 'success',
-            message: action.message
-        }
-    case 'CLEAR':
-        return {
-            usage: 'idle',
-            message: null
-        }
-    default:
-        return state
+        case 'ERROR':
+            return {
+                usage: 'error',
+                message: action.message
+            }
+        case 'SUCCESS':
+            return {
+                usage: 'success',
+                message: action.message
+            }
+        case 'CLEAR':
+            return {
+                usage: 'idle',
+                message: null
+            }
+        default:
+            return state
     }
 }
 export default notificationReducer
