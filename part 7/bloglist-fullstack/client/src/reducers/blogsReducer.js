@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import { createSuccessMessage, createErrorMessage } from './notificationReducer'
 
 export const initializeBlogsAction = () => {
     return async dispatch => {
@@ -11,32 +12,44 @@ export const initializeBlogsAction = () => {
 }
 
 export const createBlogAction = blog => {
-    return async dispatch => {
-        const newBlog = await blogService.createBlog(blog)
-        dispatch({
-            type: 'CREATE',
-            blog: newBlog
-        })
+    return dispatch => {
+        blogService.createBlog(blog)
+            .then(blog => {
+                dispatch({
+                    type: 'CREATE',
+                    blog
+                })
+                dispatch(createSuccessMessage(`Created new blog ${blog.title} by ${blog.author}`))
+            })
+            .catch(err => dispatch(createErrorMessage(`Couldn't create blog. Message: ${err.message}`)))
     }
 }
 
 export const likeBlogAction = blog => {
-    return async dispatch => {
-        await blogService.like(blog)
-        dispatch({
-            type: 'LIKE',
-            id: blog.id
-        })
+    return dispatch => {
+        blogService.like(blog)
+            .then(() => {
+                dispatch({
+                    type: 'LIKE',
+                    id: blog.id
+                })
+                dispatch(createSuccessMessage(`Liked blog ${blog.title}.`))
+            })
+            .catch(err => dispatch(createErrorMessage(`Couldn't like blog ${blog.title}. Message: ${err.response.data.error}`))            )
     }
 }
 
 export const deleteBlogAction = blog => {
-    return async dispatch => {
-        await blogService.deleteBlog(blog)
-        dispatch({
-            type: 'DELETE',
-            id: blog.id
-        })
+    return dispatch => {
+        blogService.deleteBlog(blog)
+            .then(() => {
+                dispatch({
+                    type: 'DELETE',
+                    id: blog.id
+                })
+                dispatch(createSuccessMessage(`Successfully deleted blog ${blog.title} by ${blog.author}`))
+            })
+            .catch(err => dispatch(createErrorMessage(`Couldn't delete blog ${blog.title}. Message: ${err.response.data.error}`)))
     }
 }
 

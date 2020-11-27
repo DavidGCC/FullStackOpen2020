@@ -10,7 +10,6 @@ import FullBlog from './components/FullBlog'
 
 
 import { initializeBlogsAction, createBlogAction, likeBlogAction, deleteBlogAction } from './reducers/blogsReducer'
-import { createSuccessMessage, createErrorMessage } from './reducers/notificationReducer'
 import { loginAction, logoutAction, initializeUser } from './reducers/userReducer'
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -44,33 +43,12 @@ const App = () => {
         }
     }
 
-    const createBlog = async blog => {
-        try {
-            dispatch(createBlogAction(blog))
+    const createBlog = async blog => dispatch(createBlogAction(blog))
 
-            dispatch(createSuccessMessage(`Created new blog ${blog.title} by ${blog.author}`))
-        } catch (error) {
-            dispatch(createErrorMessage(`Couldn't create blog. Message: ${error.message}`))
-        }
-    }
+    const handleLike = async (blog) => dispatch(likeBlogAction(blog))
 
-    const handleLike = async (blog) => {
-        try {
-            dispatch(likeBlogAction(blog))
-            dispatch(createSuccessMessage(`Liked blog ${blog.title}.`))
-        } catch (error) {
-            dispatch(createErrorMessage(`Couldn't like blog ${blog.title}. Message: ${error.response.data.error}`))
-        }
-    }
+    const handleDelete = async (blog) => dispatch(deleteBlogAction(blog))
 
-    const handleDelete = async (blog) => {
-        try {
-            dispatch(deleteBlogAction(blog))
-            dispatch(createSuccessMessage(`Successfully deleted blog ${blog.title} by ${blog.author}`))
-        } catch (error) {
-            dispatch(createErrorMessage(`Couldn't delete blog ${blog.title}. Message: ${error.response.data.error}`))
-        }
-    }
     const CreateFormView = () => {
         return (
             <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
