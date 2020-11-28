@@ -3,11 +3,10 @@ const baseURL = '/api/users'
 
 const getAllUserData = async () => {
     const response = await axios.get(baseURL)
-    const userAndBlogCount = {}
+    const userAndBlogCount = []
     response.data.map(user => {
-        console.log(user)
-        let { username, blogs } = user
-        userAndBlogCount[username] = blogs.length
+        let { name, blogs } = user
+        userAndBlogCount.push({ name, blogCount: blogs.length })
     })
     return userAndBlogCount
 }

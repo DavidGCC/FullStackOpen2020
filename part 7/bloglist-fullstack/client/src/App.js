@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
 
 // NODE MODEULE IMPORTS END
 
@@ -12,6 +13,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import TogglableBlog from './components/TogglableBlog'
 import FullBlog from './components/FullBlog'
+import Users from './components/Users'
 
 // COMPONENT IMPORTS END
 
@@ -38,13 +40,13 @@ const App = () => {
     const blogFormRef = useRef()
 
 
-    useEffect(() => {dispatch(initializeBlogsAction())}, [])
-    useEffect(() => {dispatch(initializeUser())}, [])
+    useEffect(() => { dispatch(initializeBlogsAction()) }, [])
+    useEffect(() => { dispatch(initializeUser()) }, [])
 
     const CreateFormView = () => {
         return (
             <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
-                <CreateBlogForm  />
+                <CreateBlogForm />
             </Togglable>
         )
     }
@@ -57,25 +59,29 @@ const App = () => {
             ))
         )
     }
-    const display = () => {
-        return user === null
-            ? <Login />
-            : (
-                <div>
-                    <Logout {...{ user }} />
-                    <br />
-                    {CreateFormView()}
-                    <h2>Added Blogs</h2>
-                    {BlogView(blogs)}
-                </div>
-            )
-    }
 
     return (
         <div>
-            <h1>Bloglist</h1>
             <Notification />
-            {display()}
+            {
+                user === null
+                    ? <Login />
+                    :
+                    (
+                        <>
+                            <Logout user={user} />
+                            <Switch>
+                                <Route exact path='/'>
+                                    {CreateFormView()}
+                                    {BlogView(blogs)}
+                                </Route>
+                                <Route path='/users'>
+                                    <Users />
+                                </Route>
+                            </Switch>
+                        </>
+                    )
+            }
         </div>
     )
 }
