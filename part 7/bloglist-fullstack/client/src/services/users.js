@@ -1,14 +1,20 @@
 import axios from 'axios'
-const baseURL = '/api/users'
+const baseUrl = '/api/users'
 
 const getAllUserData = async () => {
-    const response = await axios.get(baseURL)
+    const response = await axios.get(baseUrl)
     const userAndBlogCount = []
     response.data.map(user => {
-        let { name, blogs } = user
-        userAndBlogCount.push({ name, blogCount: blogs.length })
+        let { name, blogs, id } = user
+        userAndBlogCount.push({ name, blogCount: blogs.length, id })
     })
     return userAndBlogCount
 }
 
-export default { getAllUserData }
+const getUserBlogs = async (id) => {
+    const response = await axios.get(`${baseUrl}/${id}`)
+    const blogs = response.data.blogs
+    return blogs
+}
+
+export default { getAllUserData, getUserBlogs }

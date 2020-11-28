@@ -14,6 +14,7 @@ import Togglable from './components/Togglable'
 import TogglableBlog from './components/TogglableBlog'
 import FullBlog from './components/FullBlog'
 import Users from './components/Users'
+import UserBlogs from './components/UserBlogs'
 
 // COMPONENT IMPORTS END
 
@@ -74,6 +75,9 @@ const App = () => {
                                 <Route exact path='/'>
                                     {CreateFormView()}
                                     {BlogView(blogs)}
+                                </Route>
+                                <Route path='/users/:id'>
+                                    <UserBlogs />
                                 </Route>
                                 <Route path='/users'>
                                     <Users />
