@@ -11,21 +11,26 @@ const UserBlogs = () => {
             usersService
                 .getUserBlogs(match.params.id)
                 .then(data => {
-                    setBlogs(data)
+                    if (data.length !== 0) {
+                        setBlogs(data)
+                    } else {
+                        setBlogs(null)
+                    }
                 })
         }
-    }, [match])
+    }, [])
     return (
         <ul>
-            {blogs.length === 0
-                ? <h3>The user has not added any blogs yet</h3>
-                : blogs.map(blog => {
-                    return (
-                        <li key={blog.id}>
-                            <a href={blog.url}>{blog.title}</a>
-                        </li>
-                    )
-                })
+            {
+                blogs === null
+                    ? <h3>The user has not added any blogs yet</h3>
+                    : blogs.map(blog => {
+                        return (
+                            <li key={blog.id}>
+                                <a href={blog.url}>{blog.title}</a>
+                            </li>
+                        )
+                    })
             }
         </ul>
     )

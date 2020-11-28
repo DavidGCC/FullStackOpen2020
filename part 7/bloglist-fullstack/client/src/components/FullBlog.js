@@ -12,9 +12,9 @@ const FullBlog = ({ blog }) => {
 
     return (
         <div className='fullBlog'>
-            <p><b>URL:</b> {blog.url}</p>
+            <p><a href={blog.url}>View Full Blog</a></p>
             <p><b>Likes: </b> {blog.likes} <button className='likeButton' style={buttonStyle} onClick={() => handleLike(blog)}>Like</button></p>
-            <p><b>Created By User:</b> {blog.user.name}</p>
+            <p><b>Added By User:</b> <a href={`/users/${blog.user.id}`}>{blog.user.name}</a></p>
             <button onClick={() => handleDelete(blog)}>Remove</button>
         </div>
     )
