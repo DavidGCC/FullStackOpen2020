@@ -1,5 +1,6 @@
 import React from 'react'
 import propTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog }) => {
 
@@ -14,7 +15,7 @@ const Blog = ({ blog }) => {
     return (
         <div style={style}>
             <p className='shortBlog'>
-                <b><a href={`/blogs/${blog.id}`}>{blog.title}</a></b> by <b>{blog.author}</b>
+                <b><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></b> by <b>{blog.author}</b>
             </p>
         </div>
     )
