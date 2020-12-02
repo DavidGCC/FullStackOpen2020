@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, Link } from 'react-router-dom'
 
 import usersService from '../../services/users'
 
@@ -27,7 +27,7 @@ const UserBlogs = () => {
                     : blogs.map(blog => {
                         return (
                             <li key={blog.id}>
-                                <a href={blog.url}>{blog.title}</a>
+                                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
                             </li>
                         )
                     })
