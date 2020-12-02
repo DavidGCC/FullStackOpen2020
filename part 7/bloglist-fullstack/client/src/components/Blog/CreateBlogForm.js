@@ -1,6 +1,6 @@
 import React from 'react'
-import { useField } from '../hooks/index'
-import { createBlogAction } from '../reducers/blogsReducer'
+import { useField } from '../../hooks/index'
+import { createBlogAction } from '../../reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 
 const CreateBlogForm = () => {

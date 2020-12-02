@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { loginAction } from '../reducers/userReducer'
+import { loginAction } from '../../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 
 const Login = () => {

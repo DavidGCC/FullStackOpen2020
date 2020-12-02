@@ -14,7 +14,7 @@ const Blog = ({ blog }) => {
     return (
         <div style={style}>
             <p className='shortBlog'>
-                <b>{blog.title}</b> by <b>{blog.author}</b>
+                <b><a href={`/blogs/${blog.id}`}>{blog.title}</a></b> by <b>{blog.author}</b>
             </p>
         </div>
     )

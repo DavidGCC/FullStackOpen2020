@@ -1,10 +1,11 @@
 import React from 'react'
-import { logoutAction } from '../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { logoutAction } from '../../reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import propTypes from 'prop-types'
 
-const Logout = ( { user } ) => {
+const Logout = () => {
     const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
     const handleLogout = (event) => {
         event.preventDefault()
         if (window.confirm('Are you sure you want to log out?')) {
@@ -13,7 +14,7 @@ const Logout = ( { user } ) => {
     }
     return (
         <div>
-            <h3>{user.name} is Logged In</h3>
+            <p style={{ display: 'inline' }}>{user.name} is Logged In</p>
             <button id="logoutButton" onClick={handleLogout}>Logout</button>
         </div>
     )

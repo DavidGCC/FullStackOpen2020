@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 
-import usersService from '../services/users'
+import usersService from '../../services/users'
 
 const UserBlogs = () => {
     const match = useRouteMatch('/users/:id')
