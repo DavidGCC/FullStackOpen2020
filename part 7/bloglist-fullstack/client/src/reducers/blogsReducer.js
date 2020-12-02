@@ -1,6 +1,7 @@
 import blogService from '../services/blogs'
 import { createSuccessMessage, createErrorMessage } from './notificationReducer'
 
+
 export const initializeBlogsAction = () => {
     return async dispatch => {
         const blogs = await blogService.getAll()
@@ -21,7 +22,7 @@ export const createBlogAction = blog => {
                 })
                 dispatch(createSuccessMessage(`Created new blog ${blog.title} by ${blog.author}`))
             })
-            .catch(err => dispatch(createErrorMessage(`Couldn't create blog. Message: ${err.message}`)))
+            .catch(err => dispatch(createErrorMessage(`Couldn't create blog. Title, Author and Url Fields are required. Message: ${err.message}`)))
     }
 }
 
@@ -53,6 +54,20 @@ export const deleteBlogAction = blog => {
     }
 }
 
+export const createCommentAction = (content, blog) => {
+    return dispatch => {
+        blogService.createComment(content, blog)
+            .then((comment) => {
+                dispatch({
+                    type: 'COMMENT',
+                    comment
+                })
+                dispatch(createSuccessMessage('Successfully created a comment'))
+            })
+            .catch(err => dispatch(createErrorMessage(`Couldn't comment on this blog. Message: ${err.response.data.error}`)))
+    }
+}
+
 const blogReducer = (state = [], action) => {
     switch (action.type) {
         case 'INIT':
@@ -65,6 +80,14 @@ const blogReducer = (state = [], action) => {
             return state.map(blog => {
                 if (blog.id === action.id) {
                     return { ...blog, likes: blog.likes + 1 }
+                } else {
+                    return { ...blog }
+                }
+            })
+        case 'COMMENT':
+            return state.map(blog => {
+                if (blog.id === action.comment.blog) {
+                    return { ...blog, comments: [...blog.comments, action.comment] }
                 } else {
                     return { ...blog }
                 }

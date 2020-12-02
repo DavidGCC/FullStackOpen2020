@@ -15,8 +15,12 @@ const setAuthHeader = () => {
 }
 
 const getAll = async () => {
-    const request = await axios.get(baseUrl)
-    return request.data
+    const resonse = await axios.get(baseUrl)
+    return resonse.data
+}
+const getBlog = async (id) => {
+    const response = await axios.get(`${baseUrl}/${id}`)
+    return response.data
 }
 
 const createBlog = async blog => {
@@ -40,4 +44,10 @@ const deleteBlog = async blog => {
     return response.data
 }
 
-export default { getAll, createBlog, setToken, like, deleteBlog }
+const createComment = async (content, blog) => {
+    const id = blog.id
+    const resonse = await axios.post(`${baseUrl}/${id}/comments`, { content })
+    return resonse.data
+}
+
+export default { getAll, createBlog, setToken, like, deleteBlog, getBlog, createComment }

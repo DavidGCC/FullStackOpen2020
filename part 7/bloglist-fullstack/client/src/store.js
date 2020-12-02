@@ -15,5 +15,4 @@ const combinedReducers = combineReducers({
 
 
 const store = createStore(combinedReducers, composeWithDevTools(applyMiddleware(thunk)))
-
 export default store

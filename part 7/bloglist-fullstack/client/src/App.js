@@ -1,20 +1,20 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 
 // NODE MODEULE IMPORTS END
 
 // COMPONENT IMPORTS
 
-import Login from './components/Login'
-import Logout from './components/Logout'
-import CreateBlogForm from './components/CreateBlogForm'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import TogglableBlog from './components/TogglableBlog'
-import FullBlog from './components/FullBlog'
-import Users from './components/Users'
-import UserBlogs from './components/UserBlogs'
+import Blog from './components/Blog/Blog'
+import FullBlog from './components/Blog/FullBlog'
+import CreateBlogForm from './components/Blog/CreateBlogForm'
+import Togglable from './components/Togglables/Togglable'
+import UserBlogs from './components/User/UserBlogs'
+import Login from './components/Authentication/Login'
+import Users from './components/User/Users'
+import Navbar from './components/Navbar/Navbar'
+import Notification from './components/Notification/Notification'
 
 // COMPONENT IMPORTS END
 
@@ -30,19 +30,21 @@ const App = () => {
 
     const dispatch = useDispatch()
 
+    const user = useSelector(state => state.user)
     const blogs = useSelector(state => {
         const sortedState = state.blogs.sort((a, b) => {
             return b.likes - a.likes
         })
         return sortedState
     })
-    const user = useSelector(state => state.user)
+    const blogMatch = useRouteMatch('/blogs/:id')
+    useEffect(() => {
+        dispatch(initializeBlogsAction())
+        dispatch(initializeUser())
+    }, [])
 
     const blogFormRef = useRef()
 
-
-    useEffect(() => { dispatch(initializeBlogsAction()) }, [])
-    useEffect(() => { dispatch(initializeUser()) }, [])
 
     const CreateFormView = () => {
         return (
@@ -54,13 +56,15 @@ const App = () => {
     const BlogView = (blogs) => {
         return (
             blogs.map(blog => (
-                <TogglableBlog key={blog.id} title={blog.title} author={blog.author} defaultButtonText='Show' hiddenButtonText='Hide'>
-                    <FullBlog blog={blog} />
-                </TogglableBlog>
+                <Blog key={blog.id} blog={blog} />
             ))
         )
     }
 
+
+    const blogId = blogMatch
+        ? blogMatch.params.id
+        : null
     return (
         <div>
             <Notification />
@@ -70,17 +74,20 @@ const App = () => {
                     :
                     (
                         <>
-                            <Logout user={user} />
+                            <Navbar />
                             <Switch>
-                                <Route exact path='/'>
-                                    {CreateFormView()}
-                                    {BlogView(blogs)}
+                                <Route path='/blogs/:id'>
+                                    <FullBlog blogId={blogId}/>
                                 </Route>
                                 <Route path='/users/:id'>
                                     <UserBlogs />
                                 </Route>
                                 <Route path='/users'>
                                     <Users />
+                                </Route>
+                                <Route path={['/', '/blogs']}>
+                                    {CreateFormView()}
+                                    {BlogView(blogs)}
                                 </Route>
                             </Switch>
                         </>
