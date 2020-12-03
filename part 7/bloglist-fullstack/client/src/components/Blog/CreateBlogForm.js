@@ -2,6 +2,7 @@ import React from 'react'
 import { useField } from '../../hooks/index'
 import { createBlogAction } from '../../reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
+import { FormControl, TextField, Button } from '@material-ui/core'
 
 const CreateBlogForm = () => {
 
@@ -28,35 +29,12 @@ const CreateBlogForm = () => {
 
     return (
         <form onSubmit={handleBlogSubmit}>
-            <h2>Create New Blog</h2>
-            <label htmlFor='title'>
-                Title
-                <br />
-                <input
-                    id="titleInput"
-                    {...{ ...title }.input}/>
-            </label>
-            <br />
-
-            <label htmlFor='author'>
-                Author
-                <br />
-                <input
-                    id="authorInput"
-                    {...{ ...author }.input}/>
-            </label>
-            <br />
-
-            <label htmlFor='url'>
-                Url
-                <br />
-                <input
-                    id="urlInput"
-                    {...{ ...url }.input} />
-            </label>
-            <br />
-
-            <button id="createButton">Create New Blog</button>
+            <FormControl>
+                <TextField margin='dense' id="create-title" label="Title" variant="outlined" value={title.input.value} onChange={title.input.onChange} />
+                <TextField margin='dense' id="create-title" label="Author" variant="outlined" value={author.input.value} onChange={author.input.onChange} />
+                <TextField margin='dense' id="create-title" label="Link to blog" variant="outlined" value={url.input.value} onChange={url.input.onChange} />
+                <Button type='submit' variant='contained' color='primary' id='createButton'>Create New Blog</Button>
+            </FormControl>
         </form>
     )
 }

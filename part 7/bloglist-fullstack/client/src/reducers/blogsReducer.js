@@ -11,7 +11,6 @@ export const initializeBlogsAction = () => {
         })
     }
 }
-
 export const createBlogAction = blog => {
     return dispatch => {
         blogService.createBlog(blog)

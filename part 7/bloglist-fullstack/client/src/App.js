@@ -1,15 +1,14 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { Container } from '@material-ui/core'
 
 // NODE MODEULE IMPORTS END
 
 // COMPONENT IMPORTS
 
-import Blog from './components/Blog/Blog'
+import Blogs from './components/Blog/Blogs'
 import FullBlog from './components/Blog/FullBlog'
-import CreateBlogForm from './components/Blog/CreateBlogForm'
-import Togglable from './components/Togglables/Togglable'
 import UserBlogs from './components/User/UserBlogs'
 import Login from './components/Authentication/Login'
 import Users from './components/User/Users'
@@ -42,31 +41,11 @@ const App = () => {
         dispatch(initializeBlogsAction())
         dispatch(initializeUser())
     }, [])
-
-    const blogFormRef = useRef()
-
-
-    const CreateFormView = () => {
-        return (
-            <Togglable ref={blogFormRef} defaultButtonText={'Create New Blog'} hiddenButtonText={'Cancel'}>
-                <CreateBlogForm />
-            </Togglable>
-        )
-    }
-    const BlogView = (blogs) => {
-        return (
-            blogs.map(blog => (
-                <Blog key={blog.id} blog={blog} />
-            ))
-        )
-    }
-
-
     const blogId = blogMatch
         ? blogMatch.params.id
         : null
     return (
-        <div>
+        <Container maxWidth='xl'>
             <Notification />
             {
                 user === null
@@ -86,14 +65,13 @@ const App = () => {
                                     <Users />
                                 </Route>
                                 <Route path={['/', '/blogs']}>
-                                    {CreateFormView()}
-                                    {BlogView(blogs)}
+                                    <Blogs blogs={blogs} />
                                 </Route>
                             </Switch>
                         </>
                     )
             }
-        </div>
+        </Container>
     )
 }
 
