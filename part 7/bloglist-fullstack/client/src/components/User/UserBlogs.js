@@ -10,7 +10,6 @@ const Userblogs = ({ userId }) => {
         }
     }))
     if (user) {
-        console.log(user.blogs)
         return (
             <ul>
                 {
