@@ -44,7 +44,6 @@ const notificationReducer = (state = initialMessage, action) => {
             }
         case 'CLEAR':
             return {
-                usage: 'idle',
                 message: null
             }
         default:

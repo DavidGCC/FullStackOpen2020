@@ -21,6 +21,7 @@ import Notification from './components/Notification/Notification'
 
 import { initializeBlogsAction } from './reducers/blogsReducer'
 import { initializeUser } from './reducers/userReducer'
+import { getAllUsers } from './reducers/usersReducer'
 
 // REDUCER IMPORTS END
 
@@ -36,13 +37,19 @@ const App = () => {
         })
         return sortedState
     })
-    const blogMatch = useRouteMatch('/blogs/:id')
+
     useEffect(() => {
         dispatch(initializeBlogsAction())
+        dispatch(getAllUsers())
         dispatch(initializeUser())
     }, [])
+    const blogMatch = useRouteMatch('/blogs/:id')
     const blogId = blogMatch
         ? blogMatch.params.id
+        : null
+    const userMatch = useRouteMatch('/users/:id')
+    const userId = userMatch
+        ? userMatch.params.id
         : null
     return (
         <Container maxWidth='xl'>
@@ -59,7 +66,7 @@ const App = () => {
                                     <FullBlog blogId={blogId}/>
                                 </Route>
                                 <Route path='/users/:id'>
-                                    <UserBlogs />
+                                    <UserBlogs userId={userId}/>
                                 </Route>
                                 <Route path='/users'>
                                     <Users />

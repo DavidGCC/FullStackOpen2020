@@ -1,29 +1,22 @@
 import React from 'react'
-
 import { useSelector } from 'react-redux'
+import MuiAlert from '@material-ui/lab/Alert'
+import Snackbar from '@material-ui/core/Snackbar'
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />
+}
 
-const Notification = (  ) => {
+const Notification = () => {
 
     const { usage, message } = useSelector(state => state.notification)
 
-    const messageStyle = {
-        fontSize: '2rem',
-        width: 'fit-content',
-        padding: 20
-    }
-    if (usage === 'error') {
-        messageStyle.color = 'red'
-        messageStyle.border = '3px solid red'
-    } else {
-        messageStyle.color = 'green'
-        messageStyle.border = '3px solid green'
-    }
-
     return (
-        <div>
-            { message && <h2 style={messageStyle}>{message}</h2> }
-        </div>
+        <Snackbar open={Boolean(message)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={5000}>
+            <Alert severity={usage}>
+                {message}
+            </Alert>
+        </Snackbar>
     )
 }
 

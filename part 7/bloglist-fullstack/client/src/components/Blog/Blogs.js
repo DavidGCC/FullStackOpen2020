@@ -1,8 +1,9 @@
 import React from 'react'
 import propTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import { Table, TableCell, TableContainer, TableBody, Paper, TableRow, Typography, Grid } from '@material-ui/core'
 import CreateBlogForm from './CreateBlogForm'
+import { Link as RouterLink } from 'react-router-dom'
+import Link from '@material-ui/core/Link'
 
 
 
@@ -24,10 +25,10 @@ const Blogs = ({ blogs }) => {
                                 blogs.map(blog => (
                                     <TableRow key={blog.id}>
                                         <TableCell>
-                                            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                                            <Link component={RouterLink} to={`/blogs/${blog.id}`}>{blog.title}</Link>
                                         </TableCell>
                                         <TableCell>
-                                            <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link>
+                                            <Link component={RouterLink} to={`/users/${blog.user.id}`}>{blog.user.name}</Link>
                                         </TableCell>
                                     </TableRow>
                                 ))

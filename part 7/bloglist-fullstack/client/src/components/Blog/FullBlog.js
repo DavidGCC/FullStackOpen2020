@@ -2,7 +2,8 @@ import React from 'react'
 import { likeBlogAction, deleteBlogAction, createCommentAction } from '../../reducers/blogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useField } from '../../hooks/index'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
+import Link from '@material-ui/core/Link'
 
 const FullBlog = ({ blogId }) => {
     const dispatch = useDispatch()
@@ -23,9 +24,9 @@ const FullBlog = ({ blogId }) => {
             <div className='fullBlog'>
                 <h1>{blog.title}</h1>
                 <p>Written by {blog.author}</p>
-                <p><a target='_blank' rel='noreferrer' href={blog.url}>View Full Blog</a></p>
+                <p><Link target='_blank' rel='noreferrer' href={blog.url}>View Full Blog</Link></p>
                 <p><b>Likes: </b> {blog.likes} <button className='likeButton' style={buttonStyle} onClick={() => handleLike(blog)}>Like</button></p>
-                <p><b>Added By User:</b> <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link></p>
+                <p><b>Added By User:</b> <Link component={RouterLink} to={`/users/${blog.user.id}`}>{blog.user.name}</Link></p>
                 <h3>Comments</h3>
                 <form onSubmit={submitComment}>
                     <label htmlFor='comment'>Leave a comment: </label>
