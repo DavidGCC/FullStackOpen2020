@@ -1,15 +1,25 @@
 import React from 'react'
 import propTypes from 'prop-types'
-import { Table, TableCell, TableContainer, TableBody, Paper, TableRow, Typography, Grid } from '@material-ui/core'
+import { Table, TableCell, TableContainer, TableBody, Paper, TableRow, TableHead, Typography, Grid } from '@material-ui/core'
 import CreateBlogForm from './CreateBlogForm'
 import { Link as RouterLink } from 'react-router-dom'
 import Link from '@material-ui/core/Link'
+import { makeStyles } from '@material-ui/core/styles'
 
-
+const useStyles = makeStyles({
+    columnHead: {
+        fontSize: '1.4rem'
+    },
+    grid: {
+        width: '80vw',
+        margin: '0 auto'
+    }
+})
 
 const Blogs = ({ blogs }) => {
+    const classes = useStyles()
     return (
-        <Grid container mt={3}>
+        <Grid container className={classes.grid} spacing={2} justify='center'>
             <Grid item lg={2}>
                 <Typography variant='h2' component='h2'>Create</Typography>
                 <CreateBlogForm />
@@ -20,6 +30,12 @@ const Blogs = ({ blogs }) => {
                 </Typography>
                 <TableContainer component={Paper}>
                     <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className={classes.columnHead}>Title</TableCell>
+                                <TableCell className={classes.columnHead}>User</TableCell>
+                            </TableRow>
+                        </TableHead>
                         <TableBody>
                             {
                                 blogs.map(blog => (

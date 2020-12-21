@@ -11,7 +11,6 @@ router.get('/', async (request, response) => {
 
 router.get('/:id', async (request, response) => {
     const user = await User.findById(request.params.id).populate('blogs')
-    console.log(user)
     response.json(user)
 })
 
@@ -30,7 +29,7 @@ router.post('/', async (request, response, next) => {
             name: body.name,
             passwordHash
         });
-        const res = await user.save({});
+        const res = await user.save();
         response.json(res);
     } catch (error) {
         next(error);
