@@ -2,7 +2,7 @@ import React from 'react'
 import { likeBlogAction, deleteBlogAction, createCommentAction } from '../../reducers/blogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useField } from '../../hooks/index'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 import Link from '@material-ui/core/Link'
 import { Typography, Button, TextField, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -25,9 +25,13 @@ const FullBlog = ({ blogId }) => {
     const dispatch = useDispatch()
     const blog = useSelector(state => state.blogs.find(blog => blog.id === blogId))
     const comment = useField('text')
+    const history = useHistory()
 
     const handleLike = blog => dispatch(likeBlogAction(blog))
-    const handleDelete = blog => dispatch(deleteBlogAction(blog))
+    const handleDelete = blog => {
+        dispatch(deleteBlogAction(blog))
+        history.push('/')
+    }
 
     const submitComment = async (event) => {
         event.preventDefault()
@@ -59,7 +63,7 @@ const FullBlog = ({ blogId }) => {
                     </Typography>
                     <Button variant='contained' color='secondary' startIcon={<DeleteForeverIcon />} onClick={() => handleDelete(blog)}>Remove</Button>
                 </Grid>
-                <Grid item lg={4} alignContent='center' justify='center'>
+                <Grid container item lg={4} alignContent='center' justify='center'>
                     <Typography variant='h3' component='h3' gutterBottom={true}>
                         Comments
                     </Typography>

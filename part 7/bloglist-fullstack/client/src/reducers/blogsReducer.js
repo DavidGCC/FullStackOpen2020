@@ -14,10 +14,10 @@ export const initializeBlogsAction = () => {
 export const createBlogAction = blog => {
     return dispatch => {
         blogService.createBlog(blog)
-            .then(blog => {
+            .then(response => {
                 dispatch({
                     type: 'CREATE',
-                    blog
+                    response
                 })
                 dispatch(createSuccessMessage(`Created new blog ${blog.title} by ${blog.author}`))
             })
@@ -72,7 +72,7 @@ const blogReducer = (state = [], action) => {
         case 'INIT':
             return action.data
         case 'CREATE':
-            return [...state, action.blog]
+            return [...state, action.response]
         case 'DELETE':
             return state.filter(blog => blog.id !== action.id)
         case 'LIKE':

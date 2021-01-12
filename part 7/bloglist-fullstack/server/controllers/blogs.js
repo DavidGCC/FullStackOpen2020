@@ -43,9 +43,11 @@ router.post('/', async (request, response, next) => {
         });
 
         const res = await blog.save({});
-
         user.blogs = user.blogs.concat(res._id);
+        
         await user.save();
+        res.user = user;
+        console.log(res)
         
         response.json(res.toJSON());
     } catch (error) {
