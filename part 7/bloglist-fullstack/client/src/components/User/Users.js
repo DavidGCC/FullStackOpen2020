@@ -2,15 +2,28 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import Link from '@material-ui/core/Link'
 import { useSelector } from 'react-redux'
-import { Typography, Grid, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { Typography, Container, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+    container: {
+        margin: '0 auto',
+        width: '50%%'
+    },
+    table: {
+        width: '50%',
+        margin: '0 auto'
+    }
+})
 
 
 const Users = () => {
     const users = useSelector(state => state.users)
+    const classes = useStyles()
     if (users) {
         return (
-            <Grid container justify='center'>
-                <TableContainer>
+            <Container className={classes.container}>
+                <TableContainer className={classes.table}>
                     <Typography variant='h3' component='h3'>Users</Typography>
                     <TableHead>
                         <TableRow>
@@ -29,10 +42,10 @@ const Users = () => {
                         })}
                     </TableBody>
                 </TableContainer>
-            </Grid>
+            </Container>
         )
     } else {
-        return <h3>Loading...</h3>
+        return <Typography variant='h3' component='h3'>Loading...</Typography>
     }
 }
 

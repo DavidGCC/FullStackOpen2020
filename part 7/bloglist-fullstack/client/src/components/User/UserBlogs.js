@@ -35,7 +35,7 @@ const Userblogs = ({ userId }) => {
                 <List className={classes.list}>
                     {
                         user.blogs.length === 0
-                            ? <Typography container='h3' varaint='h3'>The user has not added any user.blogs yet</Typography>
+                            ? <Typography container='h3' varaint='h3'>The user has not added any blogs yet</Typography>
                             : user.blogs.map(blog => {
                                 return (
                                     <ListItem button className={classes.listItem} key={blog.id} component={RouterLink} to={`/blogs/${blog.id}`}>
