@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useField } from '../../hooks/index'
 import { Link as RouterLink } from 'react-router-dom'
 import Link from '@material-ui/core/Link'
-import { Typography, Button, TextField, Grid, FormControl, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import { Typography, Button, TextField, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
 import PersonIcon from '@material-ui/icons/Person'
@@ -63,7 +63,7 @@ const FullBlog = ({ blogId }) => {
                     <Typography variant='h3' component='h3' gutterBottom={true}>
                         Comments
                     </Typography>
-                    <FormControl onSubmit={submitComment}>
+                    <form onSubmit={submitComment}>
                         <Grid container spacing={2} alignItems='flex-end'>
                             <Grid item>
                                 <TextField id="commentField" label="Add Comment" {...{ ...comment.input }} />
@@ -72,7 +72,7 @@ const FullBlog = ({ blogId }) => {
                                 <Button variant='contained' color='primary' startIcon={<AddCommentIcon />}>Comment</Button>
                             </Grid>
                         </Grid>
-                    </FormControl>
+                    </form>
                     <List>
                         {blog.comments.map(comment => (
                             <ListItem key={comment.id}>
