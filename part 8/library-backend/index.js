@@ -144,6 +144,12 @@ const resolvers = {
                 id: uuid()
             }
             books = books.concat(newBook);
+            if (!authors.some(author => author.name === args.author)) {
+                authors = [...authors, {
+                    name: args.author,
+                    born: null
+                }]
+            }
             return newBook;
         }
     }
