@@ -1,33 +1,60 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Login from './components/Login'
+import { useApolloClient } from '@apollo/client';
 
 const App = () => {
-  const [page, setPage] = useState('authors')
+    const [page, setPage] = useState('authors');
+    const [token, setToken] = useState(null);
+    const client = useApolloClient();
 
-  return (
-    <div>
-      <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
-      </div>
+    useEffect(() => {
+        if (localStorage.getItem('currentUserToken')) {
+            setToken(localStorage.getItem('currentUserToken'));
+        }
+    })
 
-      <Authors
-        show={page === 'authors'}
-      />
+    const handleLogout = (e) => {
+        e.preventDefault();
+        setToken(null);
+        localStorage.clear();
+        client.resetStore();
+    }
 
-      <Books
-        show={page === 'books'}
-      />
+    return (
+        <div>
+            <div>
+                <button onClick={() => setPage('authors')}>authors</button>
+                <button onClick={() => setPage('books')}>books</button>
+                {token ? (
+                    <>
+                        <button onClick={() => setPage('add')}>add book</button>
+                        <button onClick={handleLogout}>Logout</button>
+                    </>
+                ) : <button onClick={() => setPage('login')}>Login</button>}
+            </div>
 
-      <NewBook
-        show={page === 'add'}
-      />
+            <Authors
+                show={page === 'authors'}
+            />
 
-    </div>
-  )
+            <Books
+                show={page === 'books'}
+            />
+
+            <NewBook
+                show={page === 'add'}
+            />
+
+            <Login 
+                show={page === 'login'}
+                setToken={setToken}
+            />
+
+        </div>
+    )
 }
 
 export default App

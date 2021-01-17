@@ -15,7 +15,6 @@ const Books = (props) => {
     }
 
     const books = data.allBooks;
-    console.log(books);
     return (
         <div>
             <h2>books</h2>

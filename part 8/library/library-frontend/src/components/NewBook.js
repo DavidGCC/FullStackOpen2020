@@ -53,7 +53,7 @@ const NewBook = (props) => {
                 <div>
                     published
           <input
-                        type='number'
+                        type='text'
                         value={published}
                         onChange={({ target }) => setPublished(Number(target.value))}
                     />
