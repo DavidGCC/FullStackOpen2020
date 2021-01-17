@@ -96,14 +96,16 @@ const resolvers = {
                 const author = await Author.findOne({'name': args.author});
                 let newBook;
                 if (!author) {
-                    const author = new Author({
+                    const newAuthor = new Author({
                         name: args.author
                     });
-                    await author.save();
+                    await newAuthor.save();
+                    newBook = new Book({...args, author: newAuthor._id});
+                } else {
+                    newBook = new Book({...args, author: author._id});
                 }
-                newBook = new Book({...args, author: author._id});
                 await newBook.save();
-                return Book.populate(newBook, {path: "author"})
+                return await Book.populate(newBook, {path: "author"})
             } catch (error) {
                 throw new UserInputError(error.message, {
                     invalidArgs: args
