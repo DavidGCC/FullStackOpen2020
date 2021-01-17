@@ -1,20 +1,18 @@
 import React from 'react'
-import { useQuery } from '@apollo/client';
-import { ALL_BOOKS } from '../Queries';
 
-const Books = (props) => {
-    const { loading, error, data } = useQuery(ALL_BOOKS);
-    if (!props.show) {
+const Books = ({show, result}) => {
+    if (!show) {
         return null
     }
-    if (loading) {
+    if (result.loading) {
         return <div>Loading...</div>
     }
-    if (error) {
-        console.log(error);
+    if (result.error) {
+        console.log(result.error);
     }
 
-    const books = data.allBooks;
+    const books = result.data.allBooks;
+    // const genres = [...new Set(books.map(book => book.genres).flat())];
     return (
         <div>
             <h2>books</h2>
@@ -39,6 +37,8 @@ const Books = (props) => {
                     )}
                 </tbody>
             </table>
+            <div>
+            </div>
         </div>
     )
 }

@@ -1,22 +1,21 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../Queries';
 
-const Authors = (props) => {
-    const { loading, error, data } = useQuery(ALL_AUTHORS);
+const Authors = ({show, result}) => {
     const [ editAuthor ] = useMutation(EDIT_AUTHOR, {
         refetchQueries: [ { query: ALL_AUTHORS } ]
     });
     const [ year, setYear ] = useState('');
     const [ name, setName ] = useState('');
-    if (!props.show) {
+    if (!show) {
         return null
     }
-    if (loading) {
-        return <div>Loading...</div>
+    if (result.error) {
+        console.log(result.error);
     }
-    if (error) {
-        console.log(error);
+    if (result.loading) {
+        return <div>Loading...</div>
     }
     const handleSubmit = e => {
         e.preventDefault();
@@ -25,7 +24,7 @@ const Authors = (props) => {
         setYear('');
         setName('');
     }
-    const authors = data.allAuthors;
+    const authors = result.data.allAuthors;
 
     return (
         <div>
