@@ -3,18 +3,21 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
+import { ALL_AUTHORS, ALL_BOOKS } from './Queries';
 
 const App = () => {
     const [page, setPage] = useState('authors');
     const [token, setToken] = useState(null);
+    const authors = useQuery(ALL_AUTHORS);
+    const books = useQuery(ALL_BOOKS);
     const client = useApolloClient();
 
     useEffect(() => {
         if (localStorage.getItem('currentUserToken')) {
             setToken(localStorage.getItem('currentUserToken'));
         }
-    })
+    }, [])
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -38,10 +41,12 @@ const App = () => {
 
             <Authors
                 show={page === 'authors'}
+                result={authors}
             />
 
             <Books
                 show={page === 'books'}
+                result={books}
             />
 
             <NewBook
