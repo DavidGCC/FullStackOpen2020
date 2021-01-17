@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Books = ({show, result}) => {
-    const [filter, setFilter] = React.useState('');
+    const [filter, setFilter] = React.useState();
     if (!show) {
         return null
     }
@@ -21,7 +21,7 @@ const Books = ({show, result}) => {
     return (
         <div>
             <h2>books</h2>
-
+            <p>in genre <b>{filter ? filter : "All Genres"}</b></p>
             <table>
                 <tbody>
                     <tr>
