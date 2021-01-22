@@ -1,7 +1,7 @@
 import React from 'react'
+import Filter from './Filter';
 
-const Books = ({show, result}) => {
-    const [filter, setFilter] = React.useState();
+const Books = ({show, result, genres, filter, setFilter}) => {
     if (!show) {
         return null
     }
@@ -11,13 +11,8 @@ const Books = ({show, result}) => {
     if (result.error) {
         console.log(result.error);
     }
-
-    const handleFilter = e => {
-        setFilter(e.target.value);
-    }
     
-    const books = filter ? result.data.allBooks.filter(book => book.genres.includes(filter)) : result.data.allBooks;
-    const genres = [...new Set(result.data.allBooks.map(book => book.genres).flat())];
+    const books = result.data.allBooks;
     return (
         <div>
             <h2>books</h2>
@@ -43,12 +38,7 @@ const Books = ({show, result}) => {
                 </tbody>
             </table>
             <br />
-            <div>
-                {
-                    genres.map(genre => <button key={genre} onClick={handleFilter} value={genre}>{genre}</button>)
-                }
-                <button onClick={() => setFilter('')}>All Genres</button>
-            </div>
+            <Filter genres={genres} filter={filter} setFilter={setFilter}/>
         </div>
     )
 }

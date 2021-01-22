@@ -4,14 +4,16 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import Recommended from './components/Recommended';
-import { useApolloClient, useQuery } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS, ME } from './Queries';
+import { useApolloClient, useQuery, useLazyQuery } from '@apollo/client';
+import { ALL_AUTHORS, BOOKS, ME, ALL_GENRES } from './Queries';
 
 const App = () => {
     const [page, setPage] = useState('authors');
     const [token, setToken] = useState(null);
+    const [getBooks, books] = useLazyQuery(BOOKS);
+    const [filter, setFilter] = useState('');
+    const genres = useQuery(ALL_GENRES);
     const authors = useQuery(ALL_AUTHORS);
-    const books = useQuery(ALL_BOOKS);
     const user = useQuery(ME);
     const client = useApolloClient();
 
@@ -21,6 +23,10 @@ const App = () => {
             setToken(localStorage.getItem('currentUserToken'));
         }
     }, [])
+
+    useEffect(() => {
+        getBooks({ variables: { "genre": filter } })
+    }, [filter]); //eslint-disable-line
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -56,6 +62,9 @@ const App = () => {
             <Books
                 show={page === 'books'}
                 result={books}
+                genres={genres}
+                filter={filter}
+                setFilter={setFilter}
             />
 
             <NewBook
