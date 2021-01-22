@@ -17,7 +17,6 @@ const App = () => {
     const user = useQuery(ME);
     const client = useApolloClient();
 
-    console.log(user)
     useEffect(() => {
         if (localStorage.getItem('currentUserToken')) {
             setToken(localStorage.getItem('currentUserToken'));
@@ -56,7 +55,6 @@ const App = () => {
 
             <Recommended
                 show={page === 'recommended'}
-                result={books}
                 user={user} />
 
             <Books

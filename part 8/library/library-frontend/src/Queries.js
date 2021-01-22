@@ -62,6 +62,10 @@ export const LOGIN = gql`
             password: $password
         ) {
             value
+            user {
+                username
+                favoriteGenre
+            }
         }
     }
 `;

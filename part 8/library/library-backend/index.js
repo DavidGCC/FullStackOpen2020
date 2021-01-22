@@ -35,6 +35,7 @@ const typeDefs = gql`
     }
     type Token {
         value: String!
+        user: User!
     }
     type Query {
         bookCount: Int!
@@ -43,7 +44,6 @@ const typeDefs = gql`
         allAuthors: [Author!]!
         me: User
         allGenres: [String!]!
-        useFavorite: [Book]!
     }
 
     type Mutation {
@@ -89,11 +89,6 @@ const resolvers = {
             const flattenedGenres = genres.flat();
             const uniqueGenres = new Set(flattenedGenres);
             return uniqueGenres;
-        },
-        userFavorite: (root, args, { currentUser }) => {
-            const genre = currentUser.favoriteGenre;
-            const books = Book.find({ "genres": { $in: { favoriteGenre } } });
-            return books;
         }
     },
     Author: {
@@ -159,7 +154,7 @@ const resolvers = {
                 id: user._id
             }
 
-            return {value: jwt.sign(token, process.env.JWT_SECRET)};
+            return {value: jwt.sign(token, process.env.JWT_SECRET), user};
         }
     }
 }

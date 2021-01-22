@@ -14,6 +14,10 @@ const Login = ({ show, setToken }) => {
             const token = result.data.login.value;
             setToken(token);
             localStorage.setItem('currentUserToken', token);
+            localStorage.setItem('currentUser', JSON.stringify({
+                username: result.data.login.user.username,
+                favoriteGenre: result.data.login.user.favoriteGenre
+            }));
         }
     }, [result.data]) // eslint-disable-line
 
