@@ -4,8 +4,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import Recommended from './components/Recommended';
-import { useApolloClient, useQuery, useLazyQuery } from '@apollo/client';
-import { ALL_AUTHORS, BOOKS, ME, ALL_GENRES } from './Queries';
+import { useApolloClient, useQuery, useLazyQuery, useSubscription } from '@apollo/client';
+import { ALL_AUTHORS, BOOKS, ALL_GENRES, BOOK_ADDED } from './Queries';
 
 const App = () => {
     const [page, setPage] = useState('authors');
@@ -14,8 +14,17 @@ const App = () => {
     const [filter, setFilter] = useState('');
     const genres = useQuery(ALL_GENRES);
     const authors = useQuery(ALL_AUTHORS);
-    const user = useQuery(ME);
     const client = useApolloClient();
+
+    useSubscription(BOOK_ADDED, {
+        onSubscriptionData: ({ subscriptionData }) => {
+            console.log(subscriptionData);
+        }
+    })
+
+    const updateCacheWith = (createdBook) => {
+        
+    }
 
     useEffect(() => {
         if (localStorage.getItem('currentUserToken')) {
@@ -55,7 +64,7 @@ const App = () => {
 
             <Recommended
                 show={page === 'recommended'}
-                user={user} />
+             />
 
             <Books
                 show={page === 'books'}
