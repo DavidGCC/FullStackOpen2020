@@ -7,6 +7,8 @@ import Recommended from './components/Recommended';
 import { useApolloClient, useQuery, useLazyQuery, useSubscription } from '@apollo/client';
 import { ALL_AUTHORS, BOOKS, ALL_GENRES, BOOK_ADDED } from './Queries';
 
+
+
 const App = () => {
     const [page, setPage] = useState('authors');
     const [token, setToken] = useState(null);
@@ -16,15 +18,38 @@ const App = () => {
     const authors = useQuery(ALL_AUTHORS);
     const client = useApolloClient();
 
+    const updateCacheWith = (query, variables, newData) => {
+        const includedIn = (set, object) => set.map(item => item.id).includes(object.id);
+
+        const dataInStore = client.readQuery({
+            query,
+            variables
+        });
+        if (!includedIn(dataInStore.allBooks, newData)) {
+            client.writeQuery({
+                query,
+                variables,
+                data: { allBooks: dataInStore.allBooks.concat(newData) }
+            })
+        }
+    }
+
     useSubscription(BOOK_ADDED, {
         onSubscriptionData: ({ subscriptionData }) => {
-            console.log(subscriptionData);
+            const addedBook = subscriptionData.data.bookAdded;
+            window.alert(`New Book ${subscriptionData.data.bookAdded.title} by ${subscriptionData.data.bookAdded.author.name} added.`);
+            updateCacheWith(BOOKS, {
+                "genre": filter
+            }, addedBook);
+            updateCacheWith(BOOKS, {
+                "genre": ""
+            }, addedBook);
+            updateCacheWith(BOOKS, {
+                "genre": JSON.parse(localStorage.getItem('currentUser')).favoriteGenre
+            }, addedBook);
         }
     })
 
-    const updateCacheWith = (createdBook) => {
-        
-    }
 
     useEffect(() => {
         if (localStorage.getItem('currentUserToken')) {
