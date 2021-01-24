@@ -12,6 +12,7 @@ import { ALL_AUTHORS, BOOKS, ALL_GENRES, BOOK_ADDED } from './Queries';
 const App = () => {
     const [page, setPage] = useState('authors');
     const [token, setToken] = useState(null);
+    const [favGenre, setFavGenre] = useState("");
     const [getBooks, books] = useLazyQuery(BOOKS);
     const [filter, setFilter] = useState('');
     const genres = useQuery(ALL_GENRES);
@@ -54,6 +55,7 @@ const App = () => {
     useEffect(() => {
         if (localStorage.getItem('currentUserToken')) {
             setToken(localStorage.getItem('currentUserToken'));
+            setFavGenre(JSON.parse(localStorage.getItem('currentUser')).favoriteGenre);
         }
     }, [])
 
@@ -89,6 +91,7 @@ const App = () => {
 
             <Recommended
                 show={page === 'recommended'}
+                favGenre={favGenre}
              />
 
             <Books
