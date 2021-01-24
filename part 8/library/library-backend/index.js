@@ -185,6 +185,9 @@ const server = new ApolloServer({
         }
     }
 })
+// mongoose.set("debug", (collectionName, method, query, doc) => {
+//     console.log(`${collectionName}.${method}`, JSON.stringify(query), doc);
+// });
 
 server.listen().then(({ url, subscriptionsUrl }) => {
     console.log(`Server ready at ${url}`);
