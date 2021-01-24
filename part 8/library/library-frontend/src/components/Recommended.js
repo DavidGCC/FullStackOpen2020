@@ -3,12 +3,11 @@ import { useLazyQuery } from '@apollo/client';
 import { BOOKS } from '../Queries';
 
 
-const Recommended = ({ show }) => {
+const Recommended = ({ show, favGenre }) => {
     const [getBooks, result] = useLazyQuery(BOOKS);
-    const favGenre = JSON.parse(localStorage.getItem("currentUser")).favoriteGenre;
     React.useEffect(() => {
         getBooks({ variables: { "genre": favGenre }});
-    }, []); //eslint-disable-line
+    }, [favGenre]); //eslint-disable-line
     if (!show) {
         return null;
     }
