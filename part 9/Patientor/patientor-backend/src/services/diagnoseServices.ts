@@ -8,7 +8,7 @@ const getDiagnoses = (): Diagnose[] => {
     return diagnoses;
 };
 
-const addDiagnose = () => {
+const addDiagnose = (): null => {
     return null;
 };
 
