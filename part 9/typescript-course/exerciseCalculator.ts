@@ -1,4 +1,4 @@
-interface Result {
+export interface Result {
     periodLength: number,
     trainingDays: number,
     success: boolean,
@@ -6,9 +6,9 @@ interface Result {
     ratingDescription: string,
     target: number,
     average: number
-};
+}
 
-const exerciseCalculator = (hours: Array<number>, target: number): Result => {
+export const exerciseCalculator = (hours: Array<number>, target: number): Result => {
     const average: number = hours.reduce((avg, current, _, { length }) => avg + current / length, 0);
     const trainingDays: number = hours.filter(hour => hour > 0).length;
     const success: boolean = average >= target ? true : false;
@@ -33,14 +33,16 @@ const exerciseCalculator = (hours: Array<number>, target: number): Result => {
         ratingDescription,
         target,
         average
-    }
-}
-if (process.argv.length < 4) {
-    throw new Error("Not enough arguments");
-}
-try {
-    let hours = process.argv.slice(3).map(hour => Number(hour));
-    console.log(exerciseCalculator(hours, Number(process.argv[2])));
-} catch (error) {
-    console.log("Something happened", error.message);
-}
+    };
+};
+
+// if (process.argv.length < 4) {
+//     throw new Error("Not enough arguments");
+// }
+
+// try {
+//     const hours = process.argv.slice(3).map(hour => Number(hour));
+//     console.log(exerciseCalculator(hours, Number(process.argv[2])));
+// } catch (error) {
+//     console.log("Something happened", error.message); //eslint-disable-line
+// }

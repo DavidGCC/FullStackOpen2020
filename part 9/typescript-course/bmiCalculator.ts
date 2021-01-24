@@ -28,11 +28,11 @@ export const calculateBmi = (h: number, m: number): string => {
     }
 };
 
-if (process.argv.length > 4) {
-    throw new Error("Too many arguments");
-} else if (process.argv.length < 2) {
-    throw new Error("Not enought arguments");
-}
+// if (process.argv.length > 4) {
+//     throw new Error("Too many arguments");
+// } else if (process.argv.length < 2) {
+//     throw new Error("Not enought arguments");
+// }
 
 // try {
 //     console.log(calculateBmi(Number(process.argv[2]), Number(process.argv[3])));
