@@ -1,7 +1,8 @@
 import patientData from "../../data/patients.json";
 
-import { NoSsnPatients } from "../types";
+import { NoSsnPatients, NewPatient, Patient } from "../types";
 
+const patients: Patient[] = patientData as Patient[];
 const noSsnPatients: NoSsnPatients[] = patientData as NoSsnPatients[];
 
 const getPatients = (): NoSsnPatients[] => {
@@ -16,8 +17,15 @@ const getPatients = (): NoSsnPatients[] => {
     });
 };
 
-const addPatinet = (): null => {
-    return null;
+const addPatinet = (patient: NewPatient): Patient  => {
+    const addedPatient: Patient = {
+        ...patient,
+        id: (Math.floor(Math.random() * 100000)).toString()
+    };
+
+    patients.push(addedPatient);
+
+    return addedPatient;
 };
 
 
