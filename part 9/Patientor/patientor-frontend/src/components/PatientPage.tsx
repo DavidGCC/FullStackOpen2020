@@ -22,7 +22,7 @@ const PatientPage: React.FC<{}> = () => {
             }
         };
         fetchPatient(id.id);
-    }, [id, dispatch]); 
+    }, []);
 
     const icon = patient?.gender === "male" ? "man" : patient?.gender === "female" ? "woman" : "other gender";
     return (
@@ -30,6 +30,19 @@ const PatientPage: React.FC<{}> = () => {
             <Header as={"h1"}>{patient?.name} <Icon fitted name={icon} /></Header>
             <p>SSN: {patient?.ssn}</p>
             <p>Occupation: {patient?.occupation}</p>
+            <Header as={"h2"}>Entries</Header>
+            <div>
+                {
+                    patient?.entries.map(entry => (
+                        <div key={entry.id}>
+                            <p>{entry.date} {entry.description}</p>
+                            <ul>
+                                {entry.diagnosisCodes?.map(code => <li key={code}>{code}</li>)}
+                            </ul>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     );
 };
