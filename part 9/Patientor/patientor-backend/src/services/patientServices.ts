@@ -1,9 +1,7 @@
-import patientData from "../../data/patients.json";
-
+import patients from "../../data/patients";
 import { PublicPatient, NewPatient, Patient } from "../types";
 
-const patients: Patient[] = patientData as Patient[];
-const noSsnPatients: PublicPatient[] = patientData as PublicPatient[];
+const noSsnPatients: PublicPatient[] = patients as PublicPatient[];
 
 const getPatients = (): PublicPatient[] => {
     return noSsnPatients.map(({ id, name, dateOfBirth, gender, occupation }) => {

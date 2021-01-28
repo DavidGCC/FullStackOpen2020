@@ -13,9 +13,6 @@ router.get("/", (_req, res) => {
 router.get("/:id", (req, res) => {
     const id: string = req.params.id;
     const patient = patientService.getPatientById(id);
-    if (patient) {
-        patient.entries = [];
-    }
     res.json(patient);
 });
 

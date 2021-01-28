@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { NewPatient, Gender } from "./types";
+import { NewPatient, Gender, EntryTypes, Entry } from "./types";
 
 const isString = (text: any): text is string => {
     return typeof text === "string" || text instanceof String;
@@ -13,6 +13,14 @@ const isDate = (date: string): boolean => {
 const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
 };
+
+/* eslint-disable */
+const areEntries = (entries: any): entries is Entry[] => {
+    return entries.every((entry: any) => {
+        Object.values(EntryTypes).includes(entry.type);
+    });
+};
+/* eslint-enable */
 
 const parseName = (name: string):string => {
     if (!name || !isString(name)) {
@@ -43,10 +51,17 @@ const parseOccupation = (occupation: string): string => {
 };
 
 const parseGender = (gender: Gender): Gender => {
-    if (!gender || isGender(gender)) {
+    if (!gender || !isGender(gender)) {
         throw new Error("Invalid or missing gender");
     }
     return gender;
+};
+
+const parseEntries = (entries: Entry[]): Entry[] => {
+    if (!entries || !areEntries(entries)) {
+        throw new Error("Invalid or missing entries");
+    }
+    return entries;
 };
 
 const toNewPatient = (object: NewPatient): NewPatient => {
@@ -55,7 +70,8 @@ const toNewPatient = (object: NewPatient): NewPatient => {
         dateOfBirth: parseDate(object.dateOfBirth),
         ssn: parseSsn(object.ssn),
         occupation: parseOccupation(object.occupation),
-        gender: parseGender(object.gender)
+        gender: parseGender(object.gender),
+        entries: parseEntries(object.entries)
     };
 
     return newPatient;
