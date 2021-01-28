@@ -1,20 +1,24 @@
 import patientData from "../../data/patients.json";
 
-import { NoSsnPatients, NewPatient, Patient } from "../types";
+import { PublicPatient, NewPatient, Patient } from "../types";
 
 const patients: Patient[] = patientData as Patient[];
-const noSsnPatients: NoSsnPatients[] = patientData as NoSsnPatients[];
+const noSsnPatients: PublicPatient[] = patientData as PublicPatient[];
 
-const getPatients = (): NoSsnPatients[] => {
+const getPatients = (): PublicPatient[] => {
     return noSsnPatients.map(({ id, name, dateOfBirth, gender, occupation }) => {
         return {
             id,
             name,
             dateOfBirth,
             gender,
-            occupation
+            occupation,
         };
     });
+};
+
+const getPatientById = (id: string): Patient | undefined => {
+    return patients.find((p: Patient) => p.id === id);
 };
 
 const addPatinet = (patient: NewPatient): Patient  => {
@@ -31,6 +35,7 @@ const addPatinet = (patient: NewPatient): Patient  => {
 
 export default {
     getPatients,
-    addPatinet
+    addPatinet,
+    getPatientById
 };
 
