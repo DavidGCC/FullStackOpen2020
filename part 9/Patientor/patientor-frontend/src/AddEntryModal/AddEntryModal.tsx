@@ -3,7 +3,8 @@ import { Modal } from "semantic-ui-react";
 
 import { NewEntry, EntryTypes } from "../types";
 import HospitalEntryForm from "./HospitalEntryForm";
-import OccupationalEntry from "./OccupationalEntry";
+import OccupationalEntryForm from "./OccupationalEntryForm";
+import HealthCheckEntryForm from "./HealthCheckEntryForm";
 
 interface Props {
     onSubmit: (entry: NewEntry) => void;
@@ -23,7 +24,9 @@ const AddEntryModal: React.FC<Props> = ({
             case "Hospital":
                 return <HospitalEntryForm onSubmit={onSubmit} setIsModalOpen={() => setIsModalOpen(false)} />;
             case "OccupationalHealthcare":
-                return <OccupationalEntry onSubmit={onSubmit} setIsModalOpen={() => setIsModalOpen(false)} />;
+                return <OccupationalEntryForm onSubmit={onSubmit} setIsModalOpen={() => setIsModalOpen(false)} />;
+            case "HealthCheck":
+                return <HealthCheckEntryForm onSubmit={onSubmit} setIsModalOpen={() => setIsModalOpen(false)} />;
             default:
                 return <h1>Wrong entry type</h1>;
         }

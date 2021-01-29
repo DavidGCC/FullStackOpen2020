@@ -12,7 +12,7 @@ interface Props {
     setIsModalOpen: (p: boolean) => void;
 }
 
-const OccupationalEntry: React.FC<Props> = ({ onSubmit, setIsModalOpen }) => {
+const OccupationalEntryForm: React.FC<Props> = ({ onSubmit, setIsModalOpen }) => {
     const [{ diagnoses }] = useStateValue();
     return (
         <Formik
@@ -118,4 +118,4 @@ const OccupationalEntry: React.FC<Props> = ({ onSubmit, setIsModalOpen }) => {
     );
 };
 
-export default OccupationalEntry;
+export default OccupationalEntryForm;

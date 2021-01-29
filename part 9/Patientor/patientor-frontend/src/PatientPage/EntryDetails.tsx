@@ -3,8 +3,8 @@ import { Card, Icon, Divider } from "semantic-ui-react";
 
 
 import { Entry, assertNever } from "../types";
-type IconColor = "red" | "orange" | "yellow" | "olive" | "green";
-const color = ["red", "orange", "yellow", "olive", "green"] as IconColor[];
+type IconColor = "green" | "yellow" | "red" | "orange";
+const color = ["green", "yellow", "orange", "red"] as IconColor[];
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
     switch (entry.type) {
         

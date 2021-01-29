@@ -55,6 +55,8 @@ const PatientPage: React.FC<{}> = () => {
 
     const onSubmit = async (entry: NewEntry) => {
         try {
+            console.log(entry);
+            
             const { data: createdEntry } = await axios.post(`${apiBaseUrl}/patients/${id.id}/entries`, entry);
             dispatch(addEntry(id.id, createdEntry));
         } catch (error) {
@@ -77,7 +79,7 @@ const PatientPage: React.FC<{}> = () => {
             <p>Occupation: {patient?.occupation}</p>
             <select onChange={(e) => setEntryType(e.target.value as EntryTypes)} defaultValue="Hospital">
                 <option value="Hospital">Hospital Entry</option>
-                <option value="HealthCheckEntry">Health Check Entry</option>
+                <option value="HealthCheck">Health Check Entry</option>
                 <option value="OccupationalHealthcare">Occupational Health Care Entry</option>
             </select>
             <AddEntryModal isModalOpen={isModalOpen} onSubmit={onSubmit} setIsModalOpen={setIsModalOpen} entryType={entryType}/>
