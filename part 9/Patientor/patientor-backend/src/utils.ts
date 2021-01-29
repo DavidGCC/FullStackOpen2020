@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { NewPatient, Gender, EntryTypes, Entry } from "./types";
+import { NewPatient, Gender } from "./types";
 
 const isString = (text: any): text is string => {
     return typeof text === "string" || text instanceof String;
@@ -15,11 +15,11 @@ const isGender = (gender: any): gender is Gender => {
 };
 
 /* eslint-disable */
-const areEntries = (entries: any): entries is Entry[] => {
-    return entries.every((entry: any) => {
-        Object.values(EntryTypes).includes(entry.type);
-    });
-};
+// const areEntries = (entries: any): entries is Entry[] => {
+//     return entries.every((entry: any) => {
+//         Object.values(EntryTypes).includes(entry.type);
+//     });
+// };
 /* eslint-enable */
 
 const parseName = (name: string):string => {
@@ -57,12 +57,12 @@ const parseGender = (gender: Gender): Gender => {
     return gender;
 };
 
-const parseEntries = (entries: Entry[]): Entry[] => {
-    if (!entries || !areEntries(entries)) {
-        throw new Error("Invalid or missing entries");
-    }
-    return entries;
-};
+// const parseEntries = (entries: Entry[]): Entry[] => {
+//     if (!entries || !areEntries(entries)) {
+//         throw new Error("Invalid or missing entries");
+//     }
+//     return entries;
+// };
 
 const toNewPatient = (object: NewPatient): NewPatient => {
     const newPatient: NewPatient = {
@@ -71,7 +71,7 @@ const toNewPatient = (object: NewPatient): NewPatient => {
         ssn: parseSsn(object.ssn),
         occupation: parseOccupation(object.occupation),
         gender: parseGender(object.gender),
-        entries: parseEntries(object.entries)
+        entries: []
     };
 
     return newPatient;

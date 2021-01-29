@@ -1,5 +1,5 @@
 import patients from "../../data/patients";
-import { PublicPatient, NewPatient, Patient } from "../types";
+import { PublicPatient, NewPatient, Patient, Entry } from "../types";
 
 const noSsnPatients: PublicPatient[] = patients as PublicPatient[];
 
@@ -30,10 +30,22 @@ const addPatinet = (patient: NewPatient): Patient  => {
     return addedPatient;
 };
 
+const addEntry = (id: string, entry: Entry): Entry => {
+    const addedEntry: Entry = {
+        ...entry,
+        id: (Math.floor(Math.random() * 100000).toString())
+    };
+
+    const patient = patients.find(p => p.id === id);
+    patient?.entries.push(addedEntry);
+    return addedEntry;
+};
+
 
 export default {
     getPatients,
     addPatinet,
-    getPatientById
+    getPatientById,
+    addEntry
 };
 
