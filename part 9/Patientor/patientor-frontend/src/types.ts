@@ -45,10 +45,14 @@ export interface OccupationalHealthCareEntry extends BaseEntry {
         endDate: string;
     };
 }
+
+
 export type Entry =
-    | HealthCheckEntry
-    | OccupationalHealthCareEntry
-    | HospitalEntry;
+| HealthCheckEntry
+| OccupationalHealthCareEntry
+| HospitalEntry;
+
+export type EntryTypes = "OccupationalHealthcare" | "Hospital" | "HealthCheck";
 
 export type NewHospitalEntry = Omit<HospitalEntry, "id" | "type">;
 export type NewOccupationalHealthCareEntry = Omit<OccupationalHealthCareEntry, "id" | "type">;

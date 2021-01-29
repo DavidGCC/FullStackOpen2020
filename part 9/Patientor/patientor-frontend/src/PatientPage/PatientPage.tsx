@@ -7,7 +7,7 @@ import EntryDetails from "./EntryDetails";
 import AddEntryModal from "../AddEntryModal/AddEntryModal";
 
 import { apiBaseUrl } from "../constants";
-import { Patient, Diagnosis, NewEntry } from "../types";
+import { Patient, Diagnosis, NewEntry, EntryTypes } from "../types";
 import {
     useStateValue,
     setFetchedPatient,
@@ -19,6 +19,7 @@ const PatientPage: React.FC<{}> = () => {
     const id = useParams<{ id: string }>();
     const [{ diagnoses }, dispatch] = useStateValue();
     const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
+    const [entryType, setEntryType] = React.useState<EntryTypes>("Hospital");
 
     const [patient, setPatient] = React.useState<Patient | undefined>();
 
@@ -74,7 +75,12 @@ const PatientPage: React.FC<{}> = () => {
             </Header>
             <p>SSN: {patient?.ssn}</p>
             <p>Occupation: {patient?.occupation}</p>
-            <AddEntryModal isModalOpen={isModalOpen} onSubmit={onSubmit} setIsModalOpen={setIsModalOpen} />
+            <select onChange={(e) => setEntryType(e.target.value as EntryTypes)} defaultValue="Hospital">
+                <option value="Hospital">Hospital Entry</option>
+                <option value="HealthCheckEntry">Health Check Entry</option>
+                <option value="OccupationalHealthcare">Occupational Health Care Entry</option>
+            </select>
+            <AddEntryModal isModalOpen={isModalOpen} onSubmit={onSubmit} setIsModalOpen={setIsModalOpen} entryType={entryType}/>
             <Button onClick={() => setIsModalOpen(true)}>Add New Entry</Button>
             <Header as={"h2"}>Entries</Header>
             <div>
