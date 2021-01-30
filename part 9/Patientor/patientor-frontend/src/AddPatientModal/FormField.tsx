@@ -73,6 +73,22 @@ export const NumberField: React.FC<NumberProps> = ({ field, label, min, max }) =
   </Form.Field>
 );
 
+interface DateProps extends FieldProps {
+    label: string;
+    errorMessage?: string;
+}
+
+export const DatePickerField: React.FC<DateProps> = ({ field, label }) => (
+    <Form.Field>
+        <label>{label}</label>
+        <Field {...field} type="date" format="" />
+
+        <div style={{ color: "red" }}>
+            <ErrorMessage name={field.name} />
+        </div>
+    </Form.Field>
+);
+
 export const DiagnosisSelection = ({
   diagnoses,
   setFieldValue,

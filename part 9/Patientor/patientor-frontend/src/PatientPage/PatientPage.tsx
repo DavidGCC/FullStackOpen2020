@@ -15,9 +15,6 @@ import {
     addEntry,
 } from "../state";
 
-/* TODO 
-entry validations
-*/
 
 
 const PatientPage: React.FC<{}> = () => {

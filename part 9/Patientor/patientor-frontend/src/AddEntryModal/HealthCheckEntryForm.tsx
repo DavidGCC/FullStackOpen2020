@@ -1,11 +1,12 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import { Grid, Button } from "semantic-ui-react";
+import * as Yup from "yup";
 
 import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 
-import { NewEntry, NewHealthCheckEntry } from "../types";
+import { NewEntry } from "../types";
 
 interface Props {
     onSubmit: (entry: NewEntry) => void;
@@ -24,24 +25,17 @@ const HealthCheckEntryForm: React.FC<Props> = ({ onSubmit, setIsModalOpen }) => 
                 type: "HealthCheck"
             }}
             onSubmit={onSubmit}
-            validate={(values: NewHealthCheckEntry) => {
-                const requiredError = "Field is required";
-                const outOfBoundsError = "Enter number 0 through 5";
-                const errors: { [field: string]: string } = {};
-                if (!values.date) {
-                    errors.date = requiredError;
-                }
-                if (!values.description) {
-                    errors.description = requiredError;
-                }
-                if (!values.specialist) {
-                    errors.specialist = requiredError;
-                }
-                if (values.healthCheckRating < 0 || values.healthCheckRating > 3) {
-                    errors.healthCheckRating = outOfBoundsError;
-                }
-                return errors;
-            }}
+            validationSchema={Yup.object().shape({
+                description: Yup.string().required("Description is required"),
+                date: Yup.string()
+                    .required("Date is required")
+                    .matches(/(\d\d\d\d)[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i, "Please enter valid date. Format: YYYY-MM-DD"),
+                specialist: Yup.string().required("Specialist is required"),
+                healthCheckRating: Yup.number()
+                    .required("Health Check Rating is required")
+                    .min(0, "Must be between 0 and 3(inclusive)")
+                    .max(3, "Must be between 0 and 3(inclusive)")
+            })}
         >
             {({ isValid, dirty, setFieldTouched, setFieldValue }) => {
                 return (

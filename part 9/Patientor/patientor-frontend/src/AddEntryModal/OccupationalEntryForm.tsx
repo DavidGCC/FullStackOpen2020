@@ -1,11 +1,12 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import { Grid, Button } from "semantic-ui-react";
+import * as Yup from "yup";
 
 import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 
-import { NewEntry, NewOccupationalHealthCareEntry } from "../types";
+import { NewEntry } from "../types";
 
 interface Props {
     onSubmit: (entry: NewEntry) => void;
@@ -28,23 +29,20 @@ const OccupationalEntryForm: React.FC<Props> = ({ onSubmit, setIsModalOpen }) =>
                 type: "OccupationalHealthcare"
             }}
             onSubmit={onSubmit}
-            validate={(values: NewOccupationalHealthCareEntry) => {
-                const requiredError = "Field is required";
-                const errors: { [field: string]: string } = {};
-                if (!values.date) {
-                    errors.date = requiredError;
-                }
-                if (!values.description) {
-                    errors.description = requiredError;
-                }
-                if (!values.specialist) {
-                    errors.specialist = requiredError;
-                }
-                if (!values.employerName) {
-                    errors.employerName = requiredError;
-                }
-                return errors;
-            }}
+            validationSchema={Yup.object().shape({
+                description: Yup.string().required("Description is required"),
+                date: Yup.string()
+                    .required("Date is required")
+                    .matches(/(\d\d\d\d)[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i, "Please enter valid date. Format: YYYY-MM-DD"),
+                specialist: Yup.string().required("Specialist is required"),
+                sickLeave: Yup.object().shape({
+                    startDate: Yup.string()
+                        .matches(/(\d\d\d\d)[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i, "Please enter valid date. Format YYYY-MM-DD"),
+                    endDate: Yup.string()
+                        .matches(/(\d\d\d\d)[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i, "Please enter valid date. Format YYYY-MM-DD")
+                }),
+
+            })}
         >
             {({ isValid, dirty, setFieldTouched, setFieldValue }) => {
                 return (

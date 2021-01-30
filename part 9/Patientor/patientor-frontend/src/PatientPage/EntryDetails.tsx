@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Icon, Divider, Header } from "semantic-ui-react";
 
-
 import { Entry, assertNever, Diagnosis } from "../types";
 
 type IconColor = "green" | "yellow" | "red" | "orange";
