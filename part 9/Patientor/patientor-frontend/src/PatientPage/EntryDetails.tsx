@@ -1,13 +1,13 @@
 import React from "react";
-import { Card, Icon, Divider } from "semantic-ui-react";
+import { Card, Icon, Divider, Header } from "semantic-ui-react";
 
 
-import { Entry, assertNever } from "../types";
+import { Entry, assertNever, Diagnosis } from "../types";
+
 type IconColor = "green" | "yellow" | "red" | "orange";
 const color = ["green", "yellow", "orange", "red"] as IconColor[];
-const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+const EntryDetails: React.FC<{ entry: Entry; diagnoses: {[code: string]: Diagnosis} }> = ({ entry, diagnoses }) => {
     switch (entry.type) {
-        
         case "HealthCheck":
             return (
                 <Card fluid>
@@ -61,6 +61,19 @@ const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
                             <p>Sick Leave</p>
                             <p>Start: {entry.sickLeave ? entry.sickLeave.startDate : "Not specified"}</p>
                             <p>End: {entry.sickLeave ? entry.sickLeave.endDate : "Not specified"}</p>
+                            <Divider />
+                            <Header as="h4">Diagnoses</Header>
+                            { 
+                                entry.diagnosisCodes?.length === 0 ? "No Diagnoses" : (
+                                    <ul>
+                                        { 
+                                            entry.diagnosisCodes?.map(code => (
+                                                <li key={code}>{code} {diagnoses[code]?.name}</li>
+                                            ))
+                                        }
+                                    </ul>
+                                )
+                            }
                         </Card.Description>
                     </Card.Content>
                 </Card>

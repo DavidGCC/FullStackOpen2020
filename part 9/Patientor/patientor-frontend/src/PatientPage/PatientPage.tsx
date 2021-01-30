@@ -15,6 +15,11 @@ import {
     addEntry,
 } from "../state";
 
+/* TODO 
+entry validations
+*/
+
+
 const PatientPage: React.FC<{}> = () => {
     const id = useParams<{ id: string }>();
     const [{ diagnoses }, dispatch] = useStateValue();
@@ -88,7 +93,7 @@ const PatientPage: React.FC<{}> = () => {
             <div>
                 {patient?.entries.map((entry) => (
                     <div key={entry.id} style={{ marginTop: "1rem" }}>
-                        <EntryDetails entry={entry} />
+                        <EntryDetails entry={entry} diagnoses={diagnoses}/>
                     </div>
                 ))}
             </div>
