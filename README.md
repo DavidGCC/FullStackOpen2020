@@ -5,7 +5,7 @@ The course serves as an introduction to modern web application development with 
 Partners and affiliates of the course include [Houston Inc.](https://www.houston-inc.com/), [Terveystalo](https://www.terveystalo.com/fi/Yritystietoa/Terveystalo-tyontantajana/Digital-Health/), [Elisa](https://elisa.fi/), [K-ryhmä](https://www.kesko.fi), [Unity Technologies](https://www.instagram.com/unitytechnologies/?hl=en) and [Konecranes](https://careers.konecranes.com/Konecranes/).
 
 **Course Parts:**
-**Part 0**: [Fundamentals of Web Apps](./part%200") <br />
+**Part 0**: [Fundamentals of Web Apps](./tree/master/part%200") <br />
 **Part 1**: [Introduction to React]("part 1") <br />
 **Part 2**: [Communicating with Server](./part2) <br />
 **Part 3**: [Programming a server with NodeJS and Express](./part3) <br />
