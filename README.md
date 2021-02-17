@@ -4,7 +4,7 @@ The course serves as an introduction to modern web application development with 
 
 Partners and affiliates of the course include [Houston Inc.](https://www.houston-inc.com/), [Terveystalo](https://www.terveystalo.com/fi/Yritystietoa/Terveystalo-tyontantajana/Digital-Health/), [Elisa](https://elisa.fi/), [K-ryhmä](https://www.kesko.fi), [Unity Technologies](https://www.instagram.com/unitytechnologies/?hl=en) and [Konecranes](https://careers.konecranes.com/Konecranes/).
 
-**Course Parts:**
+**Course Parts:** <br />
 **Part 0**: [Fundamentals of Web Apps](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%200) <br />
 **Part 1**: [Introduction to React](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%201) <br />
 **Part 2**: [Communicating with Serve](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%202) <br />
