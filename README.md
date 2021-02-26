@@ -12,12 +12,10 @@ The course serves as an introduction to modern web application development with 
 Partners and affiliates of the course include [Houston Inc.](https://www.houston-inc.com/), [Terveystalo](https://www.terveystalo.com/fi/Yritystietoa/Terveystalo-tyontantajana/Digital-Health/), [Elisa](https://elisa.fi/), [K-ryhmä](https://www.kesko.fi), [Unity Technologies](https://www.instagram.com/unitytechnologies/?hl=en) and [Konecranes](https://careers.konecranes.com/Konecranes/).
 
 ## **Part 0**: [Fundamentals of Web Apps](https://fullstackopen.com/en/part0)
----
 Contains graphs about client-server communication in traditional web applications and single page applications.
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%200)
 ## **Part 1**: [Introduction to React](https://fullstackopen.com/en/part1)
----
 Simple React apps demonstrating subjects such as React Component State, event handling and debugging React applications
 - [anecdotes](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%201/anecdotes) - A random anecdote generator
 - [unicafe](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%201/unicafe) - Feedback app
@@ -31,32 +29,27 @@ Simple React apps demonstrating subjects such as React Component State, event ha
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%202)
 ## **Part 3**: [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
----  
 Part 3 contains full-stack version of phonebook application started in previous part. Backend is built using ExpressJS and MongoDB
 
 [Link to deployed site](http://phonebook-contacts.herokuapp.com/)
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%203)
 ## **Part 4**: [Testing Express servers, user administration](https://fullstackopen.com/en/part4)  
----
 Part 4 contains REST API for bloglist application.
 
 Also includes unit and integration testing using JEST.
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%204)
 ## **Part 5**: [Testing React apps](https://fullstackopen.com/en/part5)  
----
 This part contains Client for the backend API developed in the previous exercises. Along with unit testing using JEST and End-to-End testing using cypress.
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%205)
 ## **Part 6**: [State management with Redux](https://fullstackopen.com/en/part6) 
----
 - [redux-anecdotes](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%206/redux-anecdotes) - anecdotes application developed in part 1 rebuilt using redux state management. Uses json server for simple database and redux thunk for asynchronous operations. 
 - [unicafe-redux](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%206/unicafe-redux)
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%206)
 ## **Part 7**: [React routes, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)  
----
 - [bloglist-fullstack](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%207/bloglist-fullstack) - A fullstack version of bloglist application developed in previous parts. 
 Added new views and comments feature.
 Using Redux State Management and React-Router for client-side routing.
@@ -69,14 +62,12 @@ Further developed version can be viewed [here](https://github.com/DavidGCC/Blogl
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%207)
 ## **Part 8**: [GraphQL](https://fullstackopen.com/en/part8)  
----
 Part 8 [library](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%208/library) application revolves around practicing GraphQL API.
 Backend is written using NodeJS, Apollo Server and MongoDB.
 Frontend is written using React and Apollo Client.
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%208)
 ## **Part 9**: [Typescript](https://fullstackopen.com/en/part9)  
----
 - [typescript-course](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%209/typescript-course) - course-info application, written in part 1, built with TypeScript.
 - [react-typescript](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%209/react-typescript) - BMI calculator and Exercise tracker built with TypeScript
 - [patientor](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%209/patientor) - Full-stack Medical record application built with TypeScript. 
