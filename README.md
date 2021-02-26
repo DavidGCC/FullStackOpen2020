@@ -30,7 +30,6 @@ Simple React apps demonstrating subjects such as React Component State, event ha
 - [phonebook](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%202/phonebook) - A simple React Phonebook application.
 
 [Exercise Solutions](https://github.com/DavidGCC/FullStackOpen2020/tree/master/part%202)
----
 ## **Part 3**: [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
 ---  
 Part 3 contains full-stack version of phonebook application started in previous part. Backend is built using ExpressJS and MongoDB
